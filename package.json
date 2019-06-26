@@ -2,9 +2,10 @@
   "name": "osiris",
   "version": "1.0.0",
   "description": "A Nodejs based serverside application for internship management.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,20 @@
   },
   "homepage": "https://github.com/DAMCS/Osiris#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
     "connect-redis": "^3.4.1",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
-    "passport": "^0.4.0"
+    "memory": "0.0.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "sequelize": "^5.8.12",
+    "sequelize-cli": "^5.5.0",
+    "sqlite3": "^4.0.9",
+    "supertest": "^4.0.2"
   }
 }
