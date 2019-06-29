@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -23,9 +23,11 @@
     "connect-flash": "^0.1.1",
     "connect-redis": "^3.4.1",
     "crypto": "^1.0.1",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "memory": "0.0.3",
+    "nodemon": "^1.19.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
