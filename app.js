@@ -12,7 +12,10 @@ const port = process.env.PORT || 4000;
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use('/',require('./src/routes/index'));
+app.use('/students',require('./src/routes/students'));
+app.use('/faculty',require('./src/routes/faculty'));
 app.use('/login',require('./src/routes/loginRoutes.js'));
+app.use('/setting',require('./src/routes/setting'));
 
 app.listen(port,()=>{
     debug(`Listening to port ${port}`);

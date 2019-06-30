@@ -11,10 +11,8 @@ var db = new sqlite3.Database('./src/routes/VivaManagementSystem.db',(err)=>{
     console.log("Connected");
 });
 
-app.get('/studentDetails',(req,res)=>{
-    db.all('Select * From Student Order by roll_no',(err,rows)=>{
-        res.json(rows);
-    });
-});
+app.get('/',(req,res)=>{
+    res.send('No api found');
+})
 
 module.exports = app;
