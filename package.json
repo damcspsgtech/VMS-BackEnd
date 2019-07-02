@@ -1,6 +1,6 @@
 {
   "name": "osiris",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A Nodejs based serverside application for internship management.",
   "main": "app.js",
   "scripts": {
@@ -11,12 +11,12 @@
     "type": "git",
     "url": "git+https://github.com/DAMCS/Osiris.git"
   },
-  "author": "",
+  "author": "Aakash Hemadri, Akhilesh Ramakrishnan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DAMCS/Osiris/issues"
+    "url": "https://github.com/DAMCS/osiris/issues"
   },
-  "homepage": "https://github.com/DAMCS/Osiris#readme",
+  "homepage": "https://github.com/DAMCS/osiris#readme",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
