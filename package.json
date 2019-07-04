@@ -1,40 +1,16 @@
 {
   "name": "osiris",
-  "version": "0.0.1",
-  "description": "A Nodejs based serverside application for internship management.",
-  "main": "app.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DAMCS/Osiris.git"
-  },
-  "author": "Aakash Hemadri, Akhilesh Ramakrishnan",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DAMCS/osiris/issues"
-  },
-  "homepage": "https://github.com/DAMCS/osiris#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
-    "body-parser": "^1.19.0",
-    "connect-flash": "^0.1.1",
-    "connect-redis": "^3.4.1",
-    "crypto": "^1.0.1",
-    "debug": "^4.1.1",
-    "express": "^4.17.1",
-    "express-session": "^1.16.2",
-    "fs": "0.0.1-security",
-    "memory": "0.0.3",
-    "nodemon": "^1.19.1",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "path": "^0.12.7",
-    "sequelize": "^5.8.12",
-    "sequelize-cli": "^5.5.0",
-    "sqlite3": "^4.0.9",
-    "supertest": "^4.0.2"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   }
 }
