@@ -4,5 +4,10 @@
     "src/*",
     "public/*"
   ],
-  "ext": "js, html, css, json"
+  "ext": "js, html, css, json",
+  "env": {
+    "TZ": "UTC",
+    "NODE_ENV": "development",
+    "LOG_LEVEL": "debug"
+  }
 }
