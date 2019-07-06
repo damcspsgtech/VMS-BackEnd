@@ -1,11 +1,7 @@
-import express from 'express';
-import db from '../db'
-
-//const sqlite3 = require('sqlite3');
-//const request = require('supertest');
+const express = require('express');
+const db = require('../config/connection')
 
 const loginRouter = express.Router();
-
 
 loginRouter.post('/', (req, res) => {
 
@@ -23,4 +19,4 @@ loginRouter.post('/', (req, res) => {
 });
 
 
-export default loginRouter;
+module.exports = loginRouter;

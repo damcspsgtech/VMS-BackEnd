@@ -1,5 +1,5 @@
 const express = require('express');
-import db from '../db'
+const db = require('../config/sync')
 
 const studentRouter = express.Router();
 
@@ -19,4 +19,4 @@ studentRouter.get('/:roll_no', (req, res) => {
   })
 })
 
-export default studentRouter;
+module.exports = studentRouter;

@@ -4,9 +4,12 @@
  * Module dependencies.
  */
 
-import app from '../app';
-import debugLib from 'debug';
-import http from 'http';
+//Imports
+const app = require('../app');
+const debugLib = require('debug');
+const http = require('http');
+
+//Debug
 const debug = debugLib('osiris:server');
 
 

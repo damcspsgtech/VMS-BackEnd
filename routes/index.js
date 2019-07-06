@@ -1,5 +1,5 @@
-import express from 'express'
-import db from '../db';
+const express = require('express');
+const db = require('../config/connection')
 
 var router = express.Router();
 const path = require('path');
@@ -10,4 +10,4 @@ indexRouter.get('/', (req, res) => {
   res.send('No api found');
 })
 
-export default indexRouter;
+module.exports = indexRouter;

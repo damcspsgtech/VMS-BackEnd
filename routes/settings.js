@@ -1,8 +1,8 @@
-import express from 'express';
-import db from '../db';
-import fs from 'fs';
+const express = require('express');
+const db = require('../config/connection')
+const fs = require('fs');
 
-var jsonString = fs.readFileSync('src/backupStore/config.json', 'utf8');
+var jsonString = fs.readFileSync('./backupStore/config.json', 'utf8');
 
 const setting = JSON.parse(jsonString);
 
@@ -29,4 +29,4 @@ settingRouter.get('/:sem_type', (req, res) => {
 });
 
 
-export default settingRouter;
+module.exports = settingRouter;

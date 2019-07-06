@@ -1,8 +1,11 @@
 {
-  "exec": "npm run dev",
+  "exec": "npm run start",
   "watch": [
-    "src/*",
-    "public/*"
+    "public/*",
+    "config/*",
+    "models/*",
+    "routes/*",
+    "app.js"
   ],
   "ext": "js, html, css, json",
   "env": {
