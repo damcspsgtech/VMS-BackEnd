@@ -12,7 +12,7 @@ const Batch = db.define('batch', {
   count: {
     type: Sequelize.INTEGER,
   },
-  email_id: {
+  email: {
     type: Sequelize.STRING,
   },
   year: {

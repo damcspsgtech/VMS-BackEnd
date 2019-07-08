@@ -15,7 +15,7 @@ const facultyRouter = require('./routes/faculty');
 
 //Database
 const db = require('./config/connection');
-
+const conn = require('./config/refresh_db')
 
 //Test Database
 db
