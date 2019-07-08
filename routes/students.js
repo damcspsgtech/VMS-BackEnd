@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../config/sync')
+const db = require('../config/connection')
 
 const studentRouter = express.Router();
 

@@ -1,6 +1,6 @@
 const db = require('./connection')
 
-db.sync()
+db.sync({ force: true })
   .then(() => {
     console.log('Databases and Tables Synced')
   })

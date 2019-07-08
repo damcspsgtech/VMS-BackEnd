@@ -1,15 +1,9 @@
 const express = require('express');
 const facultyRouter = express.Router();
 const db = require('../config/connection');
-const Faculty = require('../models/Faculty')
 
 // Get Faculty List
 facultyRouter.get('/', (req, res) => {
-  Faculty.findall()
-    .then(faculty => {
-      console.log(res, faculty)
-    })
-    .catch();
 });
 
 /*
