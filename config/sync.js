@@ -2,7 +2,8 @@ const db = require('./connection')
 
 db.sync()
   .then(() => {
-    console.log('Databases and Tables Created')
+    console.log('Databases and Tables Synced')
   })
+  .catch()
 
 
