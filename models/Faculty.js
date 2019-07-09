@@ -33,7 +33,7 @@ const Faculty = db.define('faculty', {
   core_competency: {
     type: Sequelize.STRING,
   },
-  email_id: {
+  email: {
     type: Sequelize.STRING,
   },
   areas_of_interest: {
@@ -46,4 +46,4 @@ const Faculty = db.define('faculty', {
     tableName: 'Faculty'
   });
 
-module.export = Faculty;
+module.exports = Faculty;

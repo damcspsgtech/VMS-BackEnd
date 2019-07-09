@@ -10,7 +10,7 @@ function parseSheetURL(object) {
 Settings.findOne({ where: { id: 1 } })
   .then((object) => {
     let student_sheet_link = parseSheetURL(object.student_sheet)
-    var doc = new gs('1iRx9uwfa6CYjVEtOcta4s-4qM8cDwDo8Vre6bQyTwzw');
+    var doc = new gs(student_sheet_link);
     doc.useServiceAccountAuth(credentials, (err) => {
       doc.getRows(1, function (err, rows) {
         rows.forEach((row, index) => {
