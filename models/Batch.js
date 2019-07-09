@@ -23,9 +23,19 @@ const Batch = db.define('batch', {
   },
   color: {
     type: Sequelize.STRING,
+  },
+  session: {
+    type: Sequelize.ENUM('Odd', 'Even')
+  },
+  course: {
+    type: Sequelize.STRING,
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
   }
 }, {
     tableName: 'Batch'
   });
+
 
 module.exports = Batch;

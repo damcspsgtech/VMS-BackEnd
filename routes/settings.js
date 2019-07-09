@@ -1,36 +1,43 @@
 const express = require('express');
-const db = require('../config/connection')
-const Batch = require('../models/Batch')
 const fs = require('fs');
-const bodyParser = require('body-parser');
+const Batch = require('../models/Batch');
+const Settings = require('../models/Settings');
 
-var jsonString = fs.readFileSync('./backupStore/config.json', 'utf8');
-
-const setting = JSON.parse(jsonString);
 const settingRouter = express.Router();
 
-const SemDetails = (sem_type) => {
-  var temp = { "Dept": [] };
-  for (itr = 0; itr < setting.Dept.length; itr++) {
-    for (i = 0; i < setting.Dept[itr]["sem"].length; i++) {
-      if (setting.Dept[itr]["sem"][i] == sem_type) {
-        temp.Dept.push(setting.Dept[itr])
-      }
-    }
-  }
-  return temp;
-}
-
 settingRouter.get('/', (req, res) => {
-  res.send(setting)
+  Settings.findAll({where: {id: 1}}).then((generic) => res.send(generic))
 });
 
-settingRouter.get('/:sem_type', (req, res) => {
-  res.send(SemDetails(req.params.sem_type));
+settingRouter.get('/batch', (req, res) => {
+  Batch.findAll({ where: { active: true } })
+    .then((batches) => {
+      res.send(batches);
+    });
 });
 
-settingRouter.post('/generic', (req, res) => {
-
+settingRouter.post('/', (req, res) => {
+  Batch.findAll({ where: { active: true } })
+    .then((batches) => {
+      let sum = 0;
+      for (let i = 0; i < batches.length; i++) {
+        sum += batches[i].count;
+      }
+      Settings.upsert({
+        id: '1',
+        count: sum,
+        session: req.body.session,
+        student_form: req.body.student_form,
+        report_form: req.body.report_form,
+        faculty_form: req.body.faculty_form,
+        examiner_form: req.body.examiner_form,
+        report_sheet: req.body.report_sheet,
+        faculty_sheet: req.body.faculty_sheet,
+        examiner_sheet: req.body.examiner_sheet,
+        student_sheet: req.body.student_sheet,
+      })
+        .then(() => res.send('Generic Settings have been updated!'))
+    })
 })
 
 settingRouter.post('/batch', (req, res) => {

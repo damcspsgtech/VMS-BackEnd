@@ -3,6 +3,7 @@ const db = require('../config/connection')
 
 const Students = db.define('students', {
   roll_no: {
+    primaryKey: true,
     type: Sequelize.STRING
   },
   semester: {
@@ -11,7 +12,7 @@ const Students = db.define('students', {
   name: {
     type: Sequelize.STRING
   },
-  email_id: {
+  email: {
     type: Sequelize.STRING
   },
   photo: {
@@ -36,6 +37,21 @@ const Students = db.define('students', {
     type: Sequelize.STRING
   },
   mentor_name: {
+    type: Sequelize.STRING
+  },
+  mentor_designation: {
+    type: Sequelize.STRING
+  },
+  mentor_email: {
+    type: Sequelize.STRING
+  },
+  project_domain_keywords: {
+    type: Sequelize.STRING
+  },
+  project_title: {
+    type: Sequelize.STRING
+  },
+  joined_date: {
     type: Sequelize.STRING
   }
 }, {

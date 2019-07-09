@@ -15,7 +15,7 @@ const facultyRouter = require('./routes/faculty');
 
 //Database
 const db = require('./config/connection');
-const conn = require('./config/refresh_db')
+//const refresh = require('./config/refresh_db')
 
 //Test Database
 db
@@ -27,6 +27,8 @@ db
     console.error('Unable to connect to the database:', err);
   });
 
+//SpreadSheet
+const gs = require('./config/spreadsheet')
 //Init app as express object
 const app = express();
 
