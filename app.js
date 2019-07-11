@@ -7,6 +7,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 /*
 * Routes
@@ -22,9 +24,8 @@ const facultyRouter = require('./routes/faculty');
 */
 const db = require('./config/connection');
 
-/*
-* Database Authentication and Connection Establishment
-*/
+//Test Database
+
 db
   .authenticate()
   .then(() => {
@@ -58,7 +59,14 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
+app.use(session({
+  secret: 'keyboard cat',
+  saveUninitialized:false,
+  resave:false,
+  store: new SequelizeStore({
+    db:db,
+  })
+}))
 
 app.use('/', indexRouter);
 app.use('/api/students', studentsRouter);
