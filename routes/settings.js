@@ -6,7 +6,7 @@ const Settings = require('../models/Settings');
 const settingRouter = express.Router();
 
 settingRouter.get('/', (req, res) => {
-  Settings.findAll({where: {id: 1}}).then((generic) => res.send(generic))
+  Settings.findOne({ where: { id: 1 } }).then((generic) => res.send(generic))
 });
 
 settingRouter.get('/batch', (req, res) => {

@@ -16,7 +16,7 @@ const Batch = db.define('batch', {
     type: Sequelize.STRING,
   },
   year: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
   },
   tutor: {
     type: Sequelize.STRING,

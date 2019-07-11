@@ -53,6 +53,9 @@ const Students = db.define('students', {
   },
   joined_date: {
     type: Sequelize.STRING
+  },
+  batch: {
+    type: Sequelize.STRING
   }
 }, {
     tableName: 'Students'

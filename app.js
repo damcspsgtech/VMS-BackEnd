@@ -61,10 +61,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
   secret: 'keyboard cat',
-  saveUninitialized:false,
-  resave:false,
+  saveUninitialized: false,
+  resave: false,
   store: new SequelizeStore({
-    db:db,
+    db: db,
   })
 }))
 
