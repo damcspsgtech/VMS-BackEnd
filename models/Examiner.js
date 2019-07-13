@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Examiners = db.define('Examiners', {
+  const Examiner = db.define('examiner', {
 
   });
-  return Examiners;
+  return Examiner;
 }

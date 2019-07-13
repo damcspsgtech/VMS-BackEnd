@@ -1,13 +1,23 @@
+/*
+* Handles response for the endpoint => /
+*/
+'use strict'
+/*
+* Imports
+*/
 const express = require('express');
-const db = require('../config/db');
-
-
 const indexRouter = express.Router();
 
+/*
+* 
+*/
 indexRouter.get('/', (req, res) => {
   res.send('No api found');
 })
 
+/*
+* Retrieves appropriate session.
+*/
 indexRouter.get('/:id', (req, res) => {
   req.session.u_id = req.params.id;
   if (req.session.u_id == 1) {
@@ -16,7 +26,7 @@ indexRouter.get('/:id', (req, res) => {
   }
   else {
     console.log(req.params.id, req.session.u_id);
-    res.send('Sessuon has been set');
+    res.send('Session has been set');
   }
 })
 

@@ -1,9 +1,11 @@
-const db = require('./db')
+/*
+* Syncing database with spreadsheet.
+*/
+'use strict'
 
-db.sync()
-  .then(() => {
-    console.log('Databases and Tables Synced')
-  })
-  .catch()
-
+/*
+* Imports that handle sheet Synchronization
+*/
+const students = require('./student_spreadsheet');
+const faculty = require('./faculty_spreadsheet');
 

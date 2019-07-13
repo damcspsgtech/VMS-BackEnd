@@ -1,12 +1,27 @@
+/*
+* Handles response for the endpoint /api/settings/
+*/
+
+/*
+* Imports
+*/
 const express = require('express');
-const fs = require('fs');
 const db = require('../config/db');
 const settingRouter = express.Router();
 
+/*
+* *GET* response to generic settings request.
+*/
 settingRouter.get('/', (req, res) => {
+  /*
+  * Returns the one row from Setting.
+  */
   db.setting.findOne({ where: { id: 1 } }).then((generic) => res.send(generic))
 });
 
+/*
+* *GET* response to batch setting request.
+*/
 settingRouter.get('/batch', (req, res) => {
   db.batch.findAll({ where: { active: true } })
     .then((batches) => {
@@ -14,6 +29,9 @@ settingRouter.get('/batch', (req, res) => {
     });
 });
 
+/*
+* *POST* response to setting generic.
+*/
 settingRouter.post('/', (req, res) => {
   db.batch.findAll({ where: { active: true } })
     .then((batches) => {

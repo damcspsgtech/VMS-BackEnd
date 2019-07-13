@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Students = db.define('students', {
+  const Student = db.define('student', {
     roll_no: {
       primaryKey: true,
       type: Sequelize.STRING
@@ -57,5 +57,5 @@ module.exports = (db, Sequelize) => {
   }, {
       underscored: true
     });
-  return Students;
+  return Student;
 }

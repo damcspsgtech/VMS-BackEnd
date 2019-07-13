@@ -1,17 +1,50 @@
-const gs = require('google-spreadsheet');
+/*
+* Handles initialization of student model with spreadsheet data.
+*
+* Will not Update or Insert if Batch Settings haven't been initialized
+* Will initialize guide foreign key to NULL and can be later set in the Guide List.
+*/
+
+/*
+* Imports
+*/
+const GoogleSpreadSheet = require('google-spreadsheet');
 const db = require('./db')
+
+/*
+* Secret Key for OAuth 2.0
+*/
 const credentials = require('../data/gspread_client_secret.json')
 
+/*
+* Parses Sheet URI into Sheet ID
+*
+* Required for GoogleSpreadSheet Object instantiation.
+*/
 function parseSheetURL(object) {
   object = object.split('spreadsheets/d/')[1]
   return object
 }
+
+/*
+* Expects one row that holds the whole application's Settings whose id is 1.
+*
+* This row holds the required Sheet URI
+*/
 db.setting.findOne({ where: { id: 1 } })
   .then((object) => {
-    let student_sheet_link = parseSheetURL(object.student_sheet)
-    var doc = new gs(student_sheet_link);
-    doc.useServiceAccountAuth(credentials, (err) => {
-      doc.getRows(1, function (err, rows) {
+    /*
+    * GoogleSpreadSheet Object, handles google-spreadsheets api calls.
+    */
+    var document = new GoogleSpreadSheet(parseSheetURL(object.student_sheet));
+    /*
+    * Service Account Authorization using credentials.
+    */
+    document.useServiceAccountAuth(credentials, (err) => {
+      /*
+      * Gets all rows from the GoogleSpreadSheet.
+      */
+      document.getRows(1, function (err, rows) {
         rows.forEach((row, index) => {
           let batch_id = row.rollnumber.toUpperCase().slice(0, 4);
           let object = {
@@ -33,7 +66,10 @@ db.setting.findOne({ where: { id: 1 } })
             joined_date: row.joineddate,
             batch: batch_id
           }
-          db.students.upsert(object);
+          /*
+          * Updates or Inserts parsed row into model Faculty.
+          */
+          db.student.upsert(object);
         })
       });
     })

@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Settings = db.define('Settings', {
+  const Setting = db.define('setting', {
     session: {
       type: Sequelize.ENUM('Odd', 'Even'),
     },
@@ -35,5 +35,5 @@ module.exports = (db, Sequelize) => {
   }, {
       underscored: true
     });
-  return Settings;
+  return Setting;
 }

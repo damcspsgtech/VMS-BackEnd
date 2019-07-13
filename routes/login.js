@@ -1,8 +1,17 @@
+/*
+* Handles response for the endpoint => /api/login/
+*/
+'use strict'
+/*
+* Imports
+*/
 const express = require('express');
+const loginRouter = express.Router();
 const db = require('../config/db');
 
-const loginRouter = express.Router();
-
+/*
+* Validates login.
+*/
 loginRouter.post('/', (req, res) => {
   req.session.userid = req.body.username;
   db.faculty.findOne({ where: { id: req.body.username } }).then(data => {
@@ -22,5 +31,7 @@ loginRouter.post('/', (req, res) => {
   })
 });
 
-
+/*
+* Exports
+*/
 module.exports = loginRouter;
