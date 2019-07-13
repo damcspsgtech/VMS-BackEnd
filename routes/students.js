@@ -1,10 +1,10 @@
 const express = require('express');
-const Student = require('../models/Students');
+const db = require('../config/db');
 
 const studentRouter = express.Router();
 
 studentRouter.get('/', (req, res) => {
-  Student.findAll({ order: [['roll_no', 'ASC']], include: [{ model: Batch }] })
+  db.students.findAll({ order: [['roll_no', 'ASC']], include: [{ model: Batch }] })
     .then((student_list) => {
       res.send(student_list);
     })

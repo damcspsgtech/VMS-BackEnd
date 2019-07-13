@@ -1,12 +1,15 @@
-const db = require('./connection')
-const Batch = require('../models/Batch')
-const Settings = require('../models/Settings')
-const Faculty = require('../models/Faculty')
+const db = require('./db')
 
-db.sync({ force: true })
+db.sequelize.sync({ force: true })
   .then(() => {
     console.log('Databases and Tables Synced')
-    Batch.create(({
+    db.faculty.create({
+      id: 'Alien',
+      pass: 'admin',
+      role: 'ADMIN',
+      name: 'Administrator'
+    })
+    db.batch.create(({
       id: '15PW',
       code: 'PW',
       count: 40,
@@ -18,7 +21,7 @@ db.sync({ force: true })
       course: "MSc. Software Systems",
       active: true,
     }))
-    Batch.create({
+    db.batch.create({
       id: '15PT',
       code: 'PT',
       count: 40,
@@ -30,7 +33,7 @@ db.sync({ force: true })
       course: "MSc. Theoretical Computer Science",
       active: true,
     })
-    Batch.create({
+    db.batch.create({
       id: '15PD',
       code: 'PD',
       count: 40,
@@ -42,7 +45,7 @@ db.sync({ force: true })
       course: "MSc. Data Science",
       active: true,
     })
-    Batch.create({
+    db.batch.create({
       id: '14PW',
       code: 'PW',
       count: 40,
@@ -54,7 +57,7 @@ db.sync({ force: true })
       course: "MSc. Applied Science",
       active: true,
     })
-    Batch.create({
+    db.batch.create({
       id: '14PT',
       code: 'PT',
       count: 40,
@@ -66,7 +69,7 @@ db.sync({ force: true })
       course: "MSc. Applied Science",
       active: true,
     })
-    Settings.create({
+    db.setting.create({
       id: 1,
       session: 'Odd',
       count: 120,
@@ -81,11 +84,6 @@ db.sync({ force: true })
       report_sheet: 'https://docs.google.com/sheets',
       examiner_sheet: 'https://docs.google.com/sheets',
     })
-    Faculty.create({
-      id: 'admin',
-      pass: 'admin',
-      role: 'ADMIN',
-      name: 'Administrator'
-    })
+
   })
   .catch()

@@ -1,6 +1,5 @@
 const gs = require('google-spreadsheet');
-const Faculty = require('../models/Faculty')
-const Settings = require('../models/Settings')
+const db = require('./db')
 const credentials = require('../data/gspread_client_secret.json')
 
 function parseSheetURL(object) {
@@ -9,7 +8,7 @@ function parseSheetURL(object) {
   return object
 }
 
-Settings.findOne({ where: { id: 1 } })
+db.setting.findOne({ where: { id: 1 } })
   .then((object) => {
     let faculty_sheet_id = parseSheetURL(object.faculty_sheet);
     var doc = new gs(faculty_sheet_id);
@@ -31,7 +30,7 @@ Settings.findOne({ where: { id: 1 } })
             is_guide: false,
             allocated_count: 0,
           }
-          Faculty.upsert(object)
+          db.faculty.upsert(object);
         })
       })
     })

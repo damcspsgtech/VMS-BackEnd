@@ -1,29 +1,27 @@
 const express = require('express');
 const fs = require('fs');
-const Batch = require('../models/Batch');
-const Settings = require('../models/Settings');
-
+const db = require('../config/db');
 const settingRouter = express.Router();
 
 settingRouter.get('/', (req, res) => {
-  Settings.findOne({ where: { id: 1 } }).then((generic) => res.send(generic))
+  db.setting.findOne({ where: { id: 1 } }).then((generic) => res.send(generic))
 });
 
 settingRouter.get('/batch', (req, res) => {
-  Batch.findAll({ where: { active: true } })
+  db.batch.findAll({ where: { active: true } })
     .then((batches) => {
       res.send(batches);
     });
 });
 
 settingRouter.post('/', (req, res) => {
-  Batch.findAll({ where: { active: true } })
+  db.batch.findAll({ where: { active: true } })
     .then((batches) => {
       let sum = 0;
       for (let i = 0; i < batches.length; i++) {
         sum += batches[i].count;
       }
-      Settings.upsert({
+      db.setting.upsert({
         id: '1',
         count: sum,
         session: req.body.session,
@@ -41,7 +39,7 @@ settingRouter.post('/', (req, res) => {
 })
 
 settingRouter.post('/batch', (req, res) => {
-  Batch.upsert({
+  db.batch.upsert({
     id: req.body.batch_id,
     code: req.body.batch_code,
     count: req.body.batch_count,

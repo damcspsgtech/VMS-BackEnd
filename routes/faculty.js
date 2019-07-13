@@ -1,6 +1,6 @@
 const express = require('express');
 const facultyRouter = express.Router();
-const db = require('../config/connection');
+const db = require('../config/db');
 
 // Get Faculty List
 facultyRouter.get('/', (req, res) => {

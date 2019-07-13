@@ -22,11 +22,11 @@ const facultyRouter = require('./routes/faculty');
 /*
 * Database
 */
-const db = require('./config/connection');
+const db = require('./config/db');
 
 //Test Database
 
-db
+db.sequelize
   .authenticate()
   .then(() => {
     console.log('Database Connection has been established successfully.');
@@ -40,7 +40,7 @@ db
 *
 * Purges all data and recreates tables without migrations.
 */
-const refresh = require('./config/refresh_db')
+//const refresh = require('./config / refresh_db')
 
 /*
 * Spreadsheet Refreshes
@@ -64,7 +64,7 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   store: new SequelizeStore({
-    db: db,
+    db: db.sequelize,
   })
 }))
 

@@ -1,13 +1,12 @@
 const gs = require('google-spreadsheet');
-const Student = require('../models/Students')
-const Settings = require('../models/Settings')
+const db = require('./db')
 const credentials = require('../data/gspread_client_secret.json')
 
 function parseSheetURL(object) {
   object = object.split('spreadsheets/d/')[1]
   return object
 }
-Settings.findOne({ where: { id: 1 } })
+db.setting.findOne({ where: { id: 1 } })
   .then((object) => {
     let student_sheet_link = parseSheetURL(object.student_sheet)
     var doc = new gs(student_sheet_link);
@@ -34,7 +33,7 @@ Settings.findOne({ where: { id: 1 } })
             joined_date: row.joineddate,
             batch: batch_id
           }
-          Student.upsert(object);
+          db.students.upsert(object);
         })
       });
     })
