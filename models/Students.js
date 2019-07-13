@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../config/connection')
+const Batch = require('./Batch')
 
 const Students = db.define('students', {
   roll_no: {
@@ -55,7 +56,11 @@ const Students = db.define('students', {
     type: Sequelize.STRING
   },
   batch: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    references: {
+      model: Batch,
+      key: 'id'
+    }
   }
 }, {
     tableName: 'Students'

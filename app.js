@@ -40,7 +40,7 @@ db
 *
 * Purges all data and recreates tables without migrations.
 */
-//const refresh = require('./config/refresh_db')
+const refresh = require('./config/refresh_db')
 
 /*
 * Spreadsheet Refreshes

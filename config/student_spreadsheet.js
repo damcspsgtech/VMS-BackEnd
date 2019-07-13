@@ -14,6 +14,7 @@ Settings.findOne({ where: { id: 1 } })
     doc.useServiceAccountAuth(credentials, (err) => {
       doc.getRows(1, function (err, rows) {
         rows.forEach((row, index) => {
+          let batch_id = row.rollnumber.toUpperCase().slice(0, 4);
           let object = {
             roll_no: row.rollnumber.toUpperCase(),
             semester: row.semester,
@@ -31,6 +32,7 @@ Settings.findOne({ where: { id: 1 } })
             project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
             project_title: row.tentativeprojecttitle.toUpperCase(),
             joined_date: row.joineddate,
+            batch: batch_id
           }
           Student.upsert(object);
         })

@@ -1,16 +1,13 @@
 const express = require('express');
-const db = require('../config/connection')
+const Student = require('../models/Students');
 
 const studentRouter = express.Router();
 
 studentRouter.get('/', (req, res) => {
-  db.all('Select * from Student Order by roll_no', (err, rows) => {
-    if (rows) {
-      res.json(rows);
-    } else {
-      res.error('Wrong request')
-    }
-  })
+  Student.findAll({ order: [['roll_no', 'ASC']], include: [{ model: Batch }] })
+    .then((student_list) => {
+      res.send(student_list);
+    })
 })
 
 studentRouter.get('/:roll_no', (req, res) => {
