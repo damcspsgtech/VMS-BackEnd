@@ -2,9 +2,6 @@
 
 module.exports = (db, Sequelize) => {
   const Setting = db.define('setting', {
-    session: {
-      type: Sequelize.ENUM('Odd', 'Even'),
-    },
     count: {
       type: Sequelize.INTEGER,
     },
@@ -33,7 +30,8 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING,
     }
   }, {
-      underscored: true
+      underscored: true,
+      cascade: false
     });
   return Setting;
 }

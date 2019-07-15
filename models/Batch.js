@@ -6,7 +6,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
     },
-    code: {
+    semester: {
       type: Sequelize.STRING,
     },
     count: {
@@ -21,17 +21,12 @@ module.exports = (db, Sequelize) => {
     color: {
       type: Sequelize.STRING,
     },
-    session: {
-      type: Sequelize.ENUM('Odd', 'Even')
-    },
-    course: {
-      type: Sequelize.STRING,
-    },
     active: {
       type: Sequelize.BOOLEAN,
     }
   }, {
       underscored: true,
+      cascade: false
     });
   return Batch;
 }

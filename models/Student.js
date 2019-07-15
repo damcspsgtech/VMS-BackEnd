@@ -55,7 +55,8 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     }
   }, {
-      underscored: true
+      underscored: true,
+      cascade: false
     });
   return Student;
 }

@@ -43,7 +43,8 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.INTEGER,
     }
   }, {
-      underscored: true
+      underscored: true,
+      cascade: false,
     });
   return Faculty;
 }
