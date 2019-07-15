@@ -33,6 +33,7 @@ db.Sequelize = Sequelize;
 /*
 * Model Instances
 */
+db.course = require('../models/Course')(sequelize, Sequelize);
 db.faculty = require('../models/Faculty')(sequelize, Sequelize);
 db.student = require('../models/Student')(sequelize, Sequelize);
 db.setting = require('../models/Setting')(sequelize, Sequelize);
@@ -46,16 +47,17 @@ db.faculty.hasOne(db.student, {
   as: 'Guide',
 })
 db.batch.hasMany(db.student, {
-  as: 'Class'
+  as: 'Class',
 });
-db.batch.hasOne(db.faculty, {
-  as: 'Batch',
-});
-db.faculty.hasOne(db.batch, {
+db.batch.belongsTo(db.faculty, {
   as: 'Tutor',
-  constraints: false,
+});
+db.batch.belongsTo(db.course, {
+  as: 'Course',
 });
 
+
+db.sequelize.sync();
 /*
 * Exports
 */

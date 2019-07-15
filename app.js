@@ -60,7 +60,7 @@ db.sequelize
 * Use these modules to refresh db based on the google spreadsheet
 * This is safe to disable. SYNC will provided through the frontend.
 */
-//const sync_all = require('./config/sync')
+const sync_all = require('./config/sync')
 //const student = require('./config/student_spreadsheet')
 //const faculty = require('./config/faculty_spreadsheet')
 

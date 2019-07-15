@@ -10,7 +10,7 @@ const db = require('./db')
 /*
 * All tables are dropped.
 */
-db.sequelize.drop();
+//db.sequelize.drop();
 
 /*
 * database is synced.
@@ -24,71 +24,84 @@ db.sequelize.sync({ force: true })
     * Only for development. Will be removed as an when we phase to production.
     */
     db.faculty.create({
-      id: 'Alien',
+      id: 'admin',
       pass: 'admin',
       role: 'ADMIN',
       name: 'Administrator'
+    }).then(() => {
+      db.course.bulkCreate([{
+        id: 'PW',
+        name: 'MSc. Software Systems',
+      }, {
+        id: 'PT',
+        name: 'MSc. Theoretical Computer Science',
+      }, {
+        id: 'PD',
+        name: 'MSc. Data Science',
+      }, {
+        id: 'PA',
+        name: 'MSc. Applied Mathematics',
+      }]).then((course) => {
+        db.batch.bulkCreate([
+          {
+            id: '15PW',
+            semester: 'VII',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2015',
+            color: "red",
+            active: true,
+          }, {
+            id: '15PT',
+            semester: 'VII',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2015',
+            color: "blue",
+            active: true,
+          }, {
+            id: '15PD',
+            semester: 'VII',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2015',
+            color: "green",
+            active: true,
+          }, {
+            id: '14PW',
+            semester: 'X',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2014',
+            color: "red",
+            active: true,
+          }, {
+            id: '14PT',
+            semester: 'X',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2014',
+            color: "blue",
+            active: true,
+          }
+        ]).then((batches) => {
+          batches[0].setCourse(course[0]);
+          batches[1].setCourse(course[1]);
+          batches[2].setCourse(course[2]);
+          batches[3].setCourse(course[0]);
+          batches[4].setCourse(course[1]);
+          db.faculty.findOne({ where: { id: "admin" } })
+            .then((tutor) => {
+              batches[0].setTutor(tutor);
+              batches[1].setTutor(tutor);
+              batches[2].setTutor(tutor);
+              batches[3].setTutor(tutor);
+              batches[4].setTutor(tutor);
+            })
+        })
+      })
     })
-    db.batch.create(({
-      id: '15PW',
-      code: 'PW',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2015',
-      color: "red",
-      session: 'Odd',
-      course: "MSc. Software Systems",
-      active: true,
-    }))
-    db.batch.create({
-      id: '15PT',
-      code: 'PT',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2015',
-      color: "blue",
-      session: 'Odd',
-      course: "MSc. Theoretical Computer Science",
-      active: true,
-    })
-    db.batch.create({
-      id: '15PD',
-      code: 'PD',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2015',
-      color: "green",
-      session: 'Odd',
-      course: "MSc. Data Science",
-      active: true,
-    })
-    db.batch.create({
-      id: '14PW',
-      code: 'PW',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2014',
-      color: "yellow",
-      session: 'Even',
-      course: "MSc. Applied Science",
-      active: true,
-    })
-    db.batch.create({
-      id: '14PT',
-      code: 'PT',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2014',
-      color: "yellow",
-      session: 'Even',
-      course: "MSc. Applied Science",
-      active: true,
-    })
+
     db.setting.create({
       id: 1,
       session: 'Odd',
