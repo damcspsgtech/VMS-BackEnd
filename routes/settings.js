@@ -51,7 +51,7 @@ settingRouter.post('/', (req, res) => {
 settingRouter.get('/batch', (req, res) => {
   db.batch.findAll({
     order: [['id', 'DESC']],
-    include: ['Tutor', 'Course']
+    include: ['Tutor', 'Course'],
   })
     .then((batches) => {
       if (batches !== null) {
@@ -73,14 +73,23 @@ settingRouter.post('/batch/update', (req, res) => {
     id: req.body.batch_id,
     count: req.body.batch_count,
     email: req.body.batch_email,
-    course_id: req.body.batch_course.id,
-    tutor_id: req.body.batch_tutor.id,
     color: req.body.batch_color,
     active: req.body.batch_active,
   })
-    .then(() => res.send({
-      result: 'success'
-    }))
+    .then(() => {
+      db.batch.findOne({
+        where: {
+          id: req.body.batch_id,
+          semester: req.body.batch_semester,
+        }
+      })
+        .then((batch) => {
+          batch.setTutor(req.body.batch_tutor);
+          res.send({
+            result: 'success'
+          })
+        })
+    })
     .catch(() => res.send({
       result: 'failed'
     }));

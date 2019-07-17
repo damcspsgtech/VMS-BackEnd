@@ -26,7 +26,7 @@ db.sequelize.sync({ force: true })
     db.faculty.create({
       id: 'admin',
       pass: 'admin',
-      role: 'ADMIN',
+      role: 'Admin',
       name: 'Administrator'
     }).then(() => {
       db.course.bulkCreate([{

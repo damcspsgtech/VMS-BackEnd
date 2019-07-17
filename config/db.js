@@ -43,19 +43,45 @@ db.examiner = require('../models/Examiner')(sequelize, Sequelize);
 /*
 * Relations
 */
-db.faculty.hasOne(db.student, {
+db.student.belongsTo(db.faculty, {
   as: 'Guide',
+  constraints: false
 })
-db.batch.hasMany(db.student, {
-  as: 'Class',
+db.student.belongsTo(db.batch, {
+  as: 'Batch',
 });
 db.batch.belongsTo(db.faculty, {
   as: 'Tutor',
 });
 db.batch.belongsTo(db.course, {
   as: 'Course',
+
 });
 
+db.student.addScope('active', {
+  include: [{
+    model: db.batch,
+    as: 'Batch',
+    where: {
+      active: true,
+    }
+  }]
+})
+
+db.faculty.addScope('faculty', {
+  where: {
+    id: {
+      [db.Sequelize.Op.not]: 'admin'
+    }
+  },
+  order: [['id', 'ASC']],
+})
+
+db.faculty.addScope('guide', {
+  where: {
+    is_guide: true,
+  }
+})
 
 db.sequelize.sync();
 /*

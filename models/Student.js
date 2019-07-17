@@ -56,7 +56,7 @@ module.exports = (db, Sequelize) => {
     }
   }, {
       underscored: true,
-      cascade: false
+      cascade: false,
     });
   return Student;
 }

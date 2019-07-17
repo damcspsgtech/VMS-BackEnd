@@ -1,6 +1,6 @@
 {
   "name": "osiris",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "google-spreadsheet": "^2.0.7",
+    "googleapis": "^41.0.0",
     "http-errors": "^1.7.3",
     "morgan": "~1.9.1",
     "nodemailer": "^6.2.1",

@@ -46,8 +46,7 @@ db.setting.findOne({ where: { id: 1 } })
       */
       document.getRows(1, function (err, rows) {
         rows.forEach((row, index) => {
-          let batch_id = row.rollnumber.toUpperCase().slice(0, 4);
-          let object = {
+          var object = {
             roll_no: row.rollnumber.toUpperCase(),
             semester: row.semester,
             name: row.nameaspercollegerecord.toUpperCase(),
@@ -64,16 +63,67 @@ db.setting.findOne({ where: { id: 1 } })
             project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
             project_title: row.tentativeprojecttitle.toUpperCase(),
             joined_date: row.joineddate,
-            batch: batch_id
           }
           /*
           * Updates or Inserts parsed row into model Faculty.
           */
-          db.student.upsert(object);
+          db.batch.findOne({
+            where: {
+              id: row.rollnumber.toUpperCase().slice(0, 4),
+              semester: row.semester.toUpperCase(),
+            }
+          }).then((batch) => {
+            db.faculty.findOne({
+              where: {
+                id: 'admin',
+              }
+            }).then((guide) => {
+              db.student.create(object)
+                .then((stud, rows) => {
+                  stud.setGuide(guide)
+                  stud.setBatch(batch)
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+            })
+              .catch((error) => {
+                console.log(error);
+              })
+          })
+            .catch((error) => {
+              console.log(error)
+            })
         })
-      });
+
+      })
     })
   })
 
 
-// 
+/*
+ db.student.findOne({
+                where: {
+                  roll_no: row.rollnumber,
+                  semester: row.semester.toUpperCase(),
+                }
+              }).then((student) => {
+                db.faculty.findOne({
+                  where: {
+                    id: 'admin',
+                  }
+                })
+                  .then((guide) => {
+                    student.setGuide(guide);
+                    db.batch.findOne({
+                      where: {
+                        id: row.rollnumber.toUpperCase().slice(0, 4),
+                        semester: row.semester.toUpperCase(),
+                      }
+                    })
+                      .then((batch) => {
+                        student.setBatch(batch);
+                      })
+                  })
+              })
+*/

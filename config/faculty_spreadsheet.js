@@ -57,7 +57,7 @@ db.setting.findOne({ where: { id: 1 } })
             email: row.emailid,
             phone_number: row.phonenumber,
             areas_of_interest: row.areaofinterestforprojectguidance.toUpperCase(),
-            role: 'GUEST',
+            role: 'Guest',
             is_guide: false,
             allocated_count: 0,
           }

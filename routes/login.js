@@ -14,19 +14,30 @@ const db = require('../config/db');
 */
 loginRouter.post('/', (req, res) => {
   req.session.userid = req.body.username;
-  db.faculty.findOne({ where: { id: req.body.username } }).then(data => {
-    if (data) {
-      if (data.dataValues.pass === req.body.password) {
-        req.session.user = data.dataValues.id;
-        req.session.role = data.dataValues.role;
-        req.session.isguide = data.dataValues.is_guide;
-        console.log('Session Items:', req.session.user, ' ', req.session.role, ' ', req.session.isguide);
-        res.send('success');
-      } else {
-        res.send('Wrong credentials')
+  db.faculty.findOne({
+    where: {
+      id: req.body.username
+    }
+  }).then((user) => {
+    if (user !== null && user !== undefined) {
+      if (user.pass === req.body.password) {
+        req.session.user = user.id;
+        req.session.role = user.role;
+        req.session.isguide = user.is_guide;
+        res.send({
+          result: 'success'
+        });
       }
-    } else {
-      res.send('No user found');
+      else {
+        res.send({
+          result: 'failed-credentials'
+        })
+      }
+    }
+    else {
+      res.send({
+        result: 'failed-user-dne'
+      });
     }
   })
 });
