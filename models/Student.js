@@ -1,12 +1,13 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Student = db.define('student', {
+  const Student = db.define('Student', {
     roll_no: {
-      primaryKey: true,
+      unique: 'compositeKey',
       type: Sequelize.STRING
     },
     semester: {
+      unique: 'compositeKey',
       type: Sequelize.INTEGER
     },
     name: {
@@ -55,8 +56,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     }
   }, {
-      underscored: true,
-      cascade: false,
+      constraints: false,
     });
   return Student;
 }

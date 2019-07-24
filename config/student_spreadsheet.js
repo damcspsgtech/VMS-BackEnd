@@ -42,7 +42,7 @@ db.setting.findOne({ where: { id: 1 } })
     */
     document.useServiceAccountAuth(credentials, (err) => {
       /*
-      * Gets all rows from the GoogleSpreadSheet.
+      * Gets all rows from the GoogleSpreadSheet.`11
       */
       document.getRows(1, function (err, rows) {
         rows.forEach((row, index) => {
@@ -67,39 +67,75 @@ db.setting.findOne({ where: { id: 1 } })
           /*
           * Updates or Inserts parsed row into model Faculty.
           */
-          db.batch.findOne({
-            where: {
-              id: row.rollnumber.toUpperCase().slice(0, 4),
-              semester: row.semester.toUpperCase(),
+          db.student.update({
+            values: {
+              roll_no: row.rollnumber.toUpperCase(),
+              semester: row.semester,
+              name: row.nameaspercollegerecord.toUpperCase(),
+              email: row.youremailid,
+              photo: row.photo,
+              phone_number: row.mobilenumber,
+              project_category: row.projectcategory.toUpperCase(),
+              organization_name: row.nameoftheorganization.toUpperCase(),
+              postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
+              address_url: row.shorturlforgooglemaplocationoftheorganization,
+              mentor_name: row.nameofthementor.toUpperCase(),
+              mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
+              mentor_email: row.emailofthementor,
+              project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
+              project_title: row.tentativeprojecttitle.toUpperCase(),
+              joined_date: row.joineddate,
             }
-          }).then((batch) => {
-            db.faculty.findOne({
+          }, {
               where: {
-                id: 'admin',
+                [db.Sequelize.Op.and]: {
+                  roll_no: {
+                    [db.Sequelize.Op.notLike]: row.rollnumber.toUpperCase()
+                  },
+                  semester: row.semester
+                }
               }
-            }).then((guide) => {
-              db.student.create(object)
-                .then((stud, rows) => {
-                  stud.setGuide(guide)
-                  stud.setBatch(batch)
-                })
-                .catch((error) => {
-                  console.log(error);
-                })
             })
-              .catch((error) => {
-                console.log(error);
-              })
-          })
-            .catch((error) => {
-              console.log(error)
+            .then((affected_rows) => {
+              if (affected_rows[1] === 0) {
+                db.student.create({
+                  roll_no: row.rollnumber.toUpperCase(),
+                  semester: row.semester.toUpperCase(),
+                  name: row.nameaspercollegerecord.toUpperCase(),
+                  email: row.youremailid,
+                  photo: row.photo,
+                  phone_number: row.mobilenumber,
+                  project_category: row.projectcategory.toUpperCase(),
+                  organization_name: row.nameoftheorganization.toUpperCase(),
+                  postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
+                  address_url: row.shorturlforgooglemaplocationoftheorganization,
+                  mentor_name: row.nameofthementor.toUpperCase(),
+                  mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
+                  mentor_email: row.emailofthementor,
+                  project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
+                  project_title: row.tentativeprojecttitle.toUpperCase(),
+                  joined_date: row.joineddate,
+                })
+                  .then((student_obj) => {
+                    db.batch.findOne({
+                      where: {
+                        id: row.rollnumber.slice(0, 4).toUpperCase(),
+                        semester: row.semester.toUpperCase()
+                      }
+                    })
+                      .then((batch) => {
+                        student_obj.setBatch(batch)
+                      })
+                  })
+              }
+              else {
+
+              }
             })
         })
-
       })
     })
   })
-
 
 /*
  db.student.findOne({

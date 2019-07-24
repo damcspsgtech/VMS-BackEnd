@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Setting = db.define('setting', {
+  const Setting = db.define('Setting', {
     count: {
       type: Sequelize.INTEGER,
     },
@@ -30,7 +30,6 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING,
     }
   }, {
-      underscored: true,
       cascade: false
     });
   return Setting;

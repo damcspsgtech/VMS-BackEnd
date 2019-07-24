@@ -42,6 +42,7 @@ db.sequelize
     console.error('Unable to connect to the database:', err);
   });
 
+
 /*
 * Database Refresh
 *
@@ -91,13 +92,16 @@ app.use(session({
 }))
 
 /*
+*
 * Defined Routes
 *
 * Add custom routes here.
 * Use /api/ convention. Check out the API documentation.
 * 
 * REST API handlers will be added later
+*
 */
+
 app.use('/', indexRouter);
 app.use('/api/students', studentsRouter);
 app.use('/api/faculty', facultyRouter);
