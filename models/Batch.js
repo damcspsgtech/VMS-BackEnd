@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Batch = db.define('batch', {
+  const Batch = db.define('Batch', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
@@ -25,7 +25,6 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.BOOLEAN,
     }
   }, {
-      underscored: true,
       cascade: false
     });
   return Batch;

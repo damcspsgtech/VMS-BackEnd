@@ -7,11 +7,11 @@
 */
 const db = require('./db')
 
+
 /*
 * All tables are dropped.
 */
 //db.sequelize.drop();
-
 /*
 * database is synced.
 */
@@ -28,6 +28,7 @@ db.sequelize.sync({ force: true })
       pass: 'admin',
       role: 'Admin',
       name: 'Administrator'
+
     }).then(() => {
       db.course.bulkCreate([{
         id: 'PW',

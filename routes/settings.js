@@ -10,7 +10,7 @@ const db = require('../config/db');
 const settingRouter = express.Router();
 
 /*
-* *GET* response to generic settings request.
+* *GET* response to GENERIC settings request.
 */
 settingRouter.get('/', (req, res) => {
   /*

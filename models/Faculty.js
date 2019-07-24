@@ -1,10 +1,10 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Faculty = db.define('faculty', {
+  const Faculty = db.define('Faculty', {
     id: {
-      primaryKey: true,
       type: Sequelize.STRING,
+      primaryKey: true,
     },
     pass: {
       type: Sequelize.STRING,
@@ -43,7 +43,6 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.INTEGER,
     }
   }, {
-      underscored: true,
       cascade: false,
     });
   return Faculty;

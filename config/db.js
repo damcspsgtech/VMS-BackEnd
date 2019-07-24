@@ -43,19 +43,27 @@ db.examiner = require('../models/Examiner')(sequelize, Sequelize);
 /*
 * Relations
 */
-db.student.belongsTo(db.faculty, {
+db.student.belongsToMany(db.faculty, {
   as: 'Guide',
-  constraints: false
+  through: 'StudentGuide',
 })
-db.student.belongsTo(db.batch, {
+
+db.student.belongsToMany(db.batch, {
   as: 'Batch',
+  through: 'StudentBatch'
 });
+
+db.student.belongsToMany(db.examiner, {
+  as: 'Examiner',
+  through: 'StudentExaminer'
+})
+
 db.batch.belongsTo(db.faculty, {
   as: 'Tutor',
 });
+
 db.batch.belongsTo(db.course, {
   as: 'Course',
-
 });
 
 db.student.addScope('active', {
