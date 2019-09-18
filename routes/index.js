@@ -11,13 +11,28 @@ const indexRouter = express.Router();
 /*
 * 
 */
-indexRouter.get('/', (req, res) => {
-  res.send('No api found');
-})
+
+// middleware function to check for logged-in users
+var sessionChecker = (req, res, next) => {
+  if (req.session.id && req.cookies.id) {
+    res.redirect('/#/dashboard');
+  } else {
+    next();
+  }
+};
+
+// route for Home-Page
+indexRouter.get('/', sessionChecker, (req, res) => {
+  res.redirect('/#/login');
+});
+
+
+module.exports = indexRouter;
 
 /*
+/*
 * Retrieves appropriate session.
-*/
+
 indexRouter.get('/:id', (req, res) => {
   req.session.u_id = req.params.id;
   if (req.session.u_id == 1) {
@@ -30,4 +45,4 @@ indexRouter.get('/:id', (req, res) => {
   }
 })
 
-module.exports = indexRouter;
+*/

@@ -46,9 +46,12 @@ db.setting.findOne({ where: { id: 1 } })
       */
       document.getRows(1, (err, rows) => {
         rows.forEach((row, index) => {
-          let object = {
+          /*
+          * Updates or Inserts parsed row into model Faculty.
+          */
+          db.faculty.create({
             id: row.employeeid.toUpperCase(),
-            pass: row.employeeid.toUpperCase(),
+            password: row.employeeid.toUpperCase(),
             title: row.title,
             name: row.fullname.toUpperCase(),
             designation: row.designation.toUpperCase(),
@@ -60,12 +63,68 @@ db.setting.findOne({ where: { id: 1 } })
             role: 'Guest',
             is_guide: false,
             allocated_count: 0,
-          }
-          /*
-          * Updates or Inserts parsed row into model Faculty.
-          */
-          db.faculty.upsert(object);
+          })
+            .catch((err) => {
+              if (err.name === 'SequelizeUniqueConstraintError') {
+                console.log('Faculty ' + err.errors[0].value + ' Exists')
+              }
+            })
         })
       })
     })
   })
+
+/*
+
+        db.faculty.create(
+            id: row.employeeid.toUpperCase(),
+            password: row.employeeid.toUpperCase(),
+            title: row.title,
+            name: row.fullname.toUpperCase(),
+            designation: row.designation.toUpperCase(),
+            short_name: row.shortnameusedindepartment.toUpperCase(),
+            core_competency: row.corecompetency.toUpperCase(),
+            email: row.emailid,
+            phone_number: row.phonenumber,
+            areas_of_interest: row.areaofinterestforprojectguidance.toUpperCase(),
+            role: 'Guest',
+            is_guide: false,
+            allocated_count: 0,
+          })
+
+          db.faculty.upsert({
+            id: row.employeeid.toUpperCase(),
+            password: row.employeeid.toUpperCase(),
+            title: row.title,
+            name: row.fullname.toUpperCase(),
+            designation: row.designation.toUpperCase(),
+            short_name: row.shortnameusedindepartment.toUpperCase(),
+            core_competency: row.corecompetency.toUpperCase(),
+            email: row.emailid,
+            phone_number: row.phonenumber,
+            areas_of_interest: row.areaofinterestforprojectguidance.toUpperCase(),
+            role: 'Guest',
+            is_guide: false,
+            allocated_count: 0,
+          })
+
+          db.faculty.findOrCreate({
+            where: {
+              id: row.employeeid.toUpperCase(),
+            },
+            default: {
+              password: row.employeeid.toUpperCase(),
+              title: row.title,
+              name: row.fullname.toUpperCase(),
+              designation: row.designation.toUpperCase(),
+              short_name: row.shortnameusedindepartment.toUpperCase(),
+              core_competency: row.corecompetency.toUpperCase(),
+              email: row.emailid,
+              phone_number: row.phonenumber,
+              areas_of_interest: row.areaofinterestforprojectguidance.toUpperCase(),
+              role: 'Guest',
+              is_guide: false,
+              allocated_count: 0,
+            }
+          })
+*/

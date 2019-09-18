@@ -1,12 +1,12 @@
 'use strict'
-
+const bcrypt = require('bcrypt')
 module.exports = (db, Sequelize) => {
   const Faculty = db.define('Faculty', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
     },
-    pass: {
+    password: {
       type: Sequelize.STRING,
     },
     role: {
@@ -44,6 +44,22 @@ module.exports = (db, Sequelize) => {
     }
   }, {
       cascade: false,
+      hooks: {
+        beforeCreate: (faculty) => {
+          const salt = bcrypt.genSaltSync();
+          faculty.password = bcrypt.hashSync(faculty.password, salt);
+        },
+        beforeUpdate: (faculty) => {
+          const salt = bcrypt.genSaltSync();
+          faculty.password = bcrypt.hashSync(faculty.password, salt);
+        }
+      },
+      instanceMethods: {
+        validPassword: (password) => {
+          return bcrypt.compareSync(password, this.password);
+        }
+      }
+
     });
   return Faculty;
 }

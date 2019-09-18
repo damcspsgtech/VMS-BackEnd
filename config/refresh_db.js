@@ -7,7 +7,6 @@
 */
 const db = require('./db')
 
-
 /*
 * All tables are dropped.
 */
@@ -25,7 +24,7 @@ db.sequelize.sync({ force: true })
     */
     db.faculty.create({
       id: 'admin',
-      pass: 'admin',
+      password: 'admin',
       role: 'Admin',
       name: 'Administrator'
 

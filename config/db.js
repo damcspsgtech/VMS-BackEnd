@@ -7,10 +7,10 @@ const Sequelize = require('sequelize');
 /*
 * Instantiating database connection
 */
-const sequelize = new Sequelize({
+const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
+  dialect: 'postgres',
   host: 'localhost',
-  dialect: 'sqlite',
-  storage: './data/db.sqlite'
+  port: '54320'
 });
 
 /*
@@ -91,7 +91,6 @@ db.faculty.addScope('guide', {
   }
 })
 
-db.sequelize.sync();
 /*
 * Exports
 */

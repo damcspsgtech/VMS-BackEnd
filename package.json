@@ -1,6 +1,6 @@
 {
   "name": "osiris",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -8,26 +8,29 @@
     "npm-check": "npm-check -u"
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "connect-session-sequelize": "^6.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "^4.1.1",
-    "email-templates": "^6.0.0",
+    "email-templates": "^6.0.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
-    "google-spreadsheet": "^2.0.7",
-    "googleapis": "^41.0.0",
+    "google-spreadsheet": "^2.0.8",
+    "googleapis": "^43.0.0",
     "http-errors": "^1.7.3",
     "morgan": "~1.9.1",
-    "nodemailer": "^6.2.1",
+    "nodemailer": "^6.3.0",
     "npm-run-all": "^4.1.5",
     "passport-local": "^1.0.0",
-    "rimraf": "^2.6.3",
-    "sequelize": "^5.10.0",
-    "sqlite3": "^4.0.9"
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "rimraf": "^3.0.0",
+    "sequelize": "^5.18.4",
+    "sqlite3": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.2",
     "npm-check": "^5.9.0"
   }
 }

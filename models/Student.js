@@ -7,8 +7,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     semester: {
-      unique: 'compositeKey',
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     name: {
       type: Sequelize.STRING
@@ -20,7 +19,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     phone_number: {
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     project_category: {
       type: Sequelize.STRING
@@ -29,10 +28,10 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     postal_address: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING(1234)
     },
     address_url: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING(1234)
     },
     address_city: {
       type: Sequelize.STRING
@@ -47,10 +46,10 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     project_domain_keywords: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING(1234)
     },
     project_title: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING(1234)
     },
     joined_date: {
       type: Sequelize.STRING

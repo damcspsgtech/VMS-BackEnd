@@ -22,8 +22,8 @@ const credentials = require('../data/gspread_client_secret.json')
 * Required for GoogleSpreadSheet Object instantiation.
 */
 function parseSheetURL(object) {
-  object = object.split('spreadsheets/d/')[1]
-  return object
+	object = object.split('spreadsheets/d/')[1]
+	return object
 }
 
 /*
@@ -32,110 +32,58 @@ function parseSheetURL(object) {
 * This row holds the required Sheet URI
 */
 db.setting.findOne({ where: { id: 1 } })
-  .then((object) => {
+	.then((object) => {
     /*
     * GoogleSpreadSheet Object, handles google-spreadsheets api calls.
     */
-    var document = new GoogleSpreadSheet(parseSheetURL(object.student_sheet));
+		var document = new GoogleSpreadSheet(parseSheetURL(object.student_sheet));
     /*
     * Service Account Authorization using credentials.
     */
-    document.useServiceAccountAuth(credentials, (err) => {
+		document.useServiceAccountAuth(credentials, (err) => {
       /*
       * Gets all rows from the GoogleSpreadSheet.`11
       */
-      document.getRows(1, function (err, rows) {
-        rows.forEach((row, index) => {
-          var object = {
-            roll_no: row.rollnumber.toUpperCase(),
-            semester: row.semester,
-            name: row.nameaspercollegerecord.toUpperCase(),
-            email: row.youremailid,
-            photo: row.photo,
-            phone_number: row.mobilenumber,
-            project_category: row.projectcategory.toUpperCase(),
-            organization_name: row.nameoftheorganization.toUpperCase(),
-            postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
-            address_url: row.shorturlforgooglemaplocationoftheorganization,
-            mentor_name: row.nameofthementor.toUpperCase(),
-            mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
-            mentor_email: row.emailofthementor,
-            project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
-            project_title: row.tentativeprojecttitle.toUpperCase(),
-            joined_date: row.joineddate,
-          }
+			document.getRows(1, function (err, rows) {
+				rows.forEach((row, index) => {
           /*
           * Updates or Inserts parsed row into model Faculty.
           */
-          db.student.update({
-            values: {
-              roll_no: row.rollnumber.toUpperCase(),
-              semester: row.semester,
-              name: row.nameaspercollegerecord.toUpperCase(),
-              email: row.youremailid,
-              photo: row.photo,
-              phone_number: row.mobilenumber,
-              project_category: row.projectcategory.toUpperCase(),
-              organization_name: row.nameoftheorganization.toUpperCase(),
-              postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
-              address_url: row.shorturlforgooglemaplocationoftheorganization,
-              mentor_name: row.nameofthementor.toUpperCase(),
-              mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
-              mentor_email: row.emailofthementor,
-              project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
-              project_title: row.tentativeprojecttitle.toUpperCase(),
-              joined_date: row.joineddate,
-            }
-          }, {
-              where: {
-                [db.Sequelize.Op.and]: {
-                  roll_no: {
-                    [db.Sequelize.Op.notLike]: row.rollnumber.toUpperCase()
-                  },
-                  semester: row.semester
-                }
-              }
-            })
-            .then((affected_rows) => {
-              if (affected_rows[1] === 0) {
-                db.student.create({
-                  roll_no: row.rollnumber.toUpperCase(),
-                  semester: row.semester.toUpperCase(),
-                  name: row.nameaspercollegerecord.toUpperCase(),
-                  email: row.youremailid,
-                  photo: row.photo,
-                  phone_number: row.mobilenumber,
-                  project_category: row.projectcategory.toUpperCase(),
-                  organization_name: row.nameoftheorganization.toUpperCase(),
-                  postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
-                  address_url: row.shorturlforgooglemaplocationoftheorganization,
-                  mentor_name: row.nameofthementor.toUpperCase(),
-                  mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
-                  mentor_email: row.emailofthementor,
-                  project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
-                  project_title: row.tentativeprojecttitle.toUpperCase(),
-                  joined_date: row.joineddate,
-                })
-                  .then((student_obj) => {
-                    db.batch.findOne({
-                      where: {
-                        id: row.rollnumber.slice(0, 4).toUpperCase(),
-                        semester: row.semester.toUpperCase()
-                      }
-                    })
-                      .then((batch) => {
-                        student_obj.setBatch(batch)
-                      })
-                  })
-              }
-              else {
-
-              }
-            })
-        })
-      })
-    })
-  })
+					db.student.upsert({
+						roll_no: row.rollnumber.toUpperCase(),
+						semester: row.semester.toUpperCase(),
+						name: row.nameaspercollegerecord.toUpperCase(),
+						email: row.youremailid,
+						photo: row.photo,
+						phone_number: row.mobilenumber,
+						project_category: row.projectcategory.toUpperCase(),
+						organization_name: row.nameoftheorganization.toUpperCase(),
+						postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
+						address_url: row.shorturlforgooglemaplocationoftheorganization,
+						mentor_name: row.nameofthementor.toUpperCase(),
+						mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
+						mentor_email: row.emailofthementor,
+						project_domain_keywords: row.projectsdomainkeywords.toUpperCase(),
+						project_title: row.tentativeprojecttitle.toUpperCase(),
+						joined_date: row.joineddate,
+					}, {
+							returning: true
+						})
+						.then(([student, created]) => {
+							db.batch.findOne({
+								where: {
+									id: student.roll_no.slice(0, 4).toUpperCase(),
+									semester: student.semester.toUpperCase()
+								}
+							})
+								.then((batch) => {
+									student.addBatch(batch)
+								})
+						})
+				})
+			})
+		})
+	})
 
 /*
  db.student.findOne({
