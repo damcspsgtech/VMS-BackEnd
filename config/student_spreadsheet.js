@@ -84,30 +84,3 @@ db.setting.findOne({ where: { id: 1 } })
 			})
 		})
 	})
-
-/*
- db.student.findOne({
-                where: {
-                  roll_no: row.rollnumber,
-                  semester: row.semester.toUpperCase(),
-                }
-              }).then((student) => {
-                db.faculty.findOne({
-                  where: {
-                    id: 'admin',
-                  }
-                })
-                  .then((guide) => {
-                    student.setGuide(guide);
-                    db.batch.findOne({
-                      where: {
-                        id: row.rollnumber.toUpperCase().slice(0, 4),
-                        semester: row.semester.toUpperCase(),
-                      }
-                    })
-                      .then((batch) => {
-                        student.setBatch(batch);
-                      })
-                  })
-              })
-*/

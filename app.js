@@ -53,7 +53,7 @@ db.sequelize
 * YOU WILL NOT BE ABLE TO RETRIEVE DATA FROM OLDER GOOGLE SPREADSHEETS.
 * IF YOU WISH TO DO SO UPDATE GOOGLE SHEET URLS THROUGH FRONTEND, AFTER THE PURGE.
 */
-const purge = require('./config/refresh_db')
+//const purge = require('./config/refresh_db')
 
 /*
 * Spreadsheet Refreshes
@@ -61,7 +61,8 @@ const purge = require('./config/refresh_db')
 * Use these modules to refresh db based on the google spreadsheet
 * This is safe to disable. SYNC will provided through the frontend.
 */
-const sync_all = require('./config/sync')
+
+//const sync_all = require('./config/sync')
 //const student = require('./config/student_spreadsheet')
 //const faculty = require('./config/faculty_spreadsheet')
 

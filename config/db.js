@@ -66,6 +66,8 @@ db.batch.belongsTo(db.course, {
   as: 'Course',
 });
 
+db.sequelize.sync();
+
 db.student.addScope('active', {
   include: [{
     model: db.batch,
@@ -73,6 +75,9 @@ db.student.addScope('active', {
     where: {
       active: true,
     }
+  }, {
+    model: db.faculty,
+    as: 'Guide',
   }]
 })
 
