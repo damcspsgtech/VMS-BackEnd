@@ -50,6 +50,7 @@ db.setting.findOne({ where: { id: 1 } })
           * Updates or Inserts parsed row into model Faculty.
           */
 					db.student.upsert({
+						id: row.rollnumber.toUpperCase() + '_' + row.semester.toUpperCase(),
 						roll_no: row.rollnumber.toUpperCase(),
 						semester: row.semester.toUpperCase(),
 						name: row.nameaspercollegerecord.toUpperCase(),
@@ -72,12 +73,13 @@ db.setting.findOne({ where: { id: 1 } })
 						.then(([student, created]) => {
 							db.batch.findOne({
 								where: {
-									id: student.roll_no.slice(0, 4).toUpperCase(),
+									id: student.roll_no.slice(0, 4).toUpperCase() + '_' + student.semester.toUpperCase(),
+									batch_code: student.roll_no.slice(0, 4).toUpperCase(),
 									semester: student.semester.toUpperCase()
 								}
 							})
 								.then((batch) => {
-									student.addBatch(batch)
+									student.setBatch(batch)
 								})
 						})
 				})

@@ -48,9 +48,7 @@ db.student.belongsToMany(db.faculty, {
   through: 'StudentGuide',
 })
 
-db.student.belongsToMany(db.batch, {
-  as: 'Batch',
-  through: 'StudentBatch'
+db.student.belongsTo(db.batch, {
 });
 
 db.student.belongsToMany(db.examiner, {
@@ -66,12 +64,9 @@ db.batch.belongsTo(db.course, {
   as: 'Course',
 });
 
-db.sequelize.sync();
-
 db.student.addScope('active', {
   include: [{
     model: db.batch,
-    as: 'Batch',
     where: {
       active: true,
     }

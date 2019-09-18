@@ -44,7 +44,8 @@ db.sequelize.sync({ force: true })
       }]).then((course) => {
         db.batch.bulkCreate([
           {
-            id: '15PW',
+            id: '15PW_VII',
+            batch_code: '15PW',
             semester: 'VII',
             count: 40,
             email: 'contact@googlegroups.com',
@@ -52,7 +53,8 @@ db.sequelize.sync({ force: true })
             color: "red",
             active: true,
           }, {
-            id: '15PT',
+            id: '15PT_VII',
+            batch_code: '15PT',
             semester: 'VII',
             count: 40,
             email: 'contact@googlegroups.com',
@@ -60,7 +62,8 @@ db.sequelize.sync({ force: true })
             color: "blue",
             active: true,
           }, {
-            id: '15PD',
+            id: '15PD_VII',
+            batch_code: '15PD',
             semester: 'VII',
             count: 40,
             email: 'contact@googlegroups.com',
@@ -68,7 +71,8 @@ db.sequelize.sync({ force: true })
             color: "green",
             active: true,
           }, {
-            id: '14PW',
+            id: '14PW_X',
+            batch_code: '14PW',
             semester: 'X',
             count: 40,
             email: 'contact@googlegroups.com',
@@ -76,12 +80,13 @@ db.sequelize.sync({ force: true })
             color: "red",
             active: true,
           }, {
-            id: '14PT',
+            id: '14PT_X',
+            batch_code: '14PT',
             semester: 'X',
             count: 40,
             email: 'contact@googlegroups.com',
             year: '2014',
-            color: "blue",
+            color: "yellow",
             active: true,
           }
         ]).then((batches) => {

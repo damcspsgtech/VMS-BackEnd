@@ -6,6 +6,9 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
     },
+    batch_code: {
+      type: Sequelize.STRING,
+    },
     semester: {
       type: Sequelize.STRING,
     },

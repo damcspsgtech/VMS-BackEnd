@@ -4,22 +4,11 @@ const db = require('../config/db');
 const studentRouter = express.Router();
 
 studentRouter.get('/', (req, res) => {
-	db.student.findAll({
-		include: [{
-			model: db.batch,
-			as: 'Batch',
-			where: {
-				active: true,
-			}
-		}, {
-			model: db.faculty,
-			as: 'Guide',
-		}],
+	db.student.scope('active').findAll({
 		order: [['roll_no', 'ASC']]
 	})
 		.then((student_list) => {
 			if (student_list !== null) {
-				console.log("color", student_list[0].Batch[0].color)
 				res.send({
 					result: 'success',
 					student_list

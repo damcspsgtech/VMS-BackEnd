@@ -2,9 +2,12 @@
 
 module.exports = (db, Sequelize) => {
   const Student = db.define('Student', {
+    id: {
+      type: Sequelize.STRING,
+      primaryKey: true
+    },
     roll_no: {
-      unique: 'compositeKey',
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     semester: {
       type: Sequelize.STRING

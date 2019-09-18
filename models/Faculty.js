@@ -40,7 +40,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING,
     },
     phone_number: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
     }
   }, {
       cascade: false,

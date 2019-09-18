@@ -75,64 +75,48 @@ settingRouter.post('/batch/update', (req, res) => {
 		email: req.body.batch_email,
 		color: req.body.batch_color,
 		active: req.body.batch_active,
-	})
-		.then(() => {
-			db.batch.findOne({
-				where: {
-					id: req.body.batch_id,
-					semester: req.body.batch_semester,
-				}
+	}, {
+			returning: true
+		})
+		.then(([batch, created]) => {
+			batch.setTutor(req.body.batch_tutor);
+			res.send({
+				result: 'success'
 			})
-				.then((batch) => {
-					batch.setTutor(req.body.batch_tutor);
-					res.send({
-						result: 'success'
-					})
-				})
 		})
 		.catch(() => res.send({
 			result: 'failed'
 		}));
+
 })
 settingRouter.post('/batch/add', (req, res) => {
 	db.course.findOne({ where: { id: req.body.course_id } })
 		.then((course) => {
 			if (course !== null) {
-				db.batch.findOne({
-					where: {
-						id: (req.body.batch_year).slice(2, 4) + req.body.course_id,
-						semester: req.body.batch_semester,
-					}
-				})
-					.then((batch) => {
-						if (batch === null) {
-							db.batch.create({
-								id: (req.body.batch_year).slice(2, 4) + req.body.course_id,
-								count: 40,
-								email: 'contact@googlegroups.com',
-								color: 'primary',
-								active: false,
-								semester: req.body.batch_semester,
-								year: req.body.batch_year,
-							})
-								.then((batch) => {
-									batch.setCourse(course);
-									db.faculty.findOne({ where: { id: 'admin' } })
-										.then((tutor) => {
-											batch.setTutor(tutor)
-										}).then(() => res.send({
-											result: 'success'
-										}))
-
-								})
-						}
-						else {
-							res.send({
-								result: 'batch_exists'
-							});
-						}
+				db.batch.upsert({
+					id: (req.body.batch_year).slice(2, 4) + req.body.course_id + '_' + req.body.batch_semester,
+					batch_code: (req.body.batch_year).slice(2, 4) + req.body.course_id,
+					count: 40,
+					email: 'contact@googlegroups.com',
+					color: 'primary',
+					active: false,
+					semester: req.body.batch_semester,
+					year: req.body.batch_year,
+				}, {
+						returning: true,
 					})
-
+					.then(([batch, created]) => {
+						batch.setCourse(course);
+						db.faculty.findOne({ where: { id: 'admin' } })
+							.then((tutor) => {
+								batch.setTutor(tutor)
+							})
+							.then(() => {
+								res.send({
+									result: 'success'
+								})
+							})
+					})
 			}
 			else {
 				res.send({
@@ -145,7 +129,7 @@ settingRouter.post('/batch/add', (req, res) => {
 		}));
 })
 settingRouter.post('/batch/delete', (req, res) => {
-	db.batch.destroy({ where: { id: req.body.batch_id } })
+	db.batch.destroy({ where: { id: req.body.batch_id + '_' + req.body.batch_semester } })
 		.then(() => {
 			res.send({
 				result: 'success',
