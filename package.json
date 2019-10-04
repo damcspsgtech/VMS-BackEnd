@@ -3,8 +3,10 @@
   "version": "1.1.1",
   "private": true,
   "scripts": {
+    "prestart": "docker-compose -f docker-compose.db.yml up -d",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
+    "stop-db": "docker-compose -f docker-compose.db.yml down",
     "npm-check": "npm-check -u"
   },
   "dependencies": {
@@ -13,6 +15,7 @@
     "connect-session-sequelize": "^6.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "^4.1.1",
+    "dotenv": "^8.1.0",
     "email-templates": "^6.0.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2",

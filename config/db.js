@@ -2,15 +2,15 @@
 * Imports
 */
 const Sequelize = require('sequelize');
-//const env = require('../env');
+
 
 /*
 * Instantiating database connection
 */
-const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
-  dialect: 'postgres',
-  host: 'localhost',
-  port: '54320'
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
+  dialect: "postgres",
+  host: process.env.HOSTNAME,
+  port: 54320
 });
 
 /*

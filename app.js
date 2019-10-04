@@ -14,6 +14,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
+require('dotenv').config();
+
 /*
 * Import Routes
 */
@@ -22,12 +24,13 @@ const loginRouter = require('./routes/login');
 const studentsRouter = require('./routes/students');
 const settingRouter = require('./routes/settings');
 const facultyRouter = require('./routes/faculty');
-
+const allotmentRouter = require('./routes/allotment');
 /*
 * Data Access Object.
 * 
 * xD
 */
+
 const db = require('./config/db');
 
 /*
@@ -127,7 +130,7 @@ app.use('/api/students', studentsRouter);
 app.use('/api/faculty', facultyRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/settings', settingRouter);
-
+app.use('/api/allotment', allotmentRouter);
 /*
 * Exports
 */
