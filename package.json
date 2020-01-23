@@ -1,6 +1,6 @@
 {
   "name": "osiris",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "prestart": "docker-compose -f docker-compose.db.yml up -d",
