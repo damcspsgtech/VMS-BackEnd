@@ -1,36 +1,36 @@
 'use strict'
 
 module.exports = (db, Sequelize) => {
-  const Examiner = db.define('Examiner', {
-    title: {
-      type: Sequelize.STRING,
-    },
-    name: {
-      type: Sequelize.STRING,
-    },
-    designation: {
-      type: Sequelize.STRING,
-    },
-    organization_address: {
-      type: Sequelize.STRING,
-    },
-    category: {
-      type: Sequelize.STRING,
-    },
-    locality: {
-      type: Sequelize.STRING,
-    },
-    email: {
-      type: Sequelize.STRING,
-    },
-    phone_number: {
+  const Setting = db.define('Setting', {
+    count: {
       type: Sequelize.INTEGER,
     },
-    field_of_expertise: {
+    student_form: {
+      type: Sequelize.STRING,
+    },
+    report_form: {
+      type: Sequelize.STRING,
+    },
+    faculty_form: {
+      type: Sequelize.STRING,
+    },
+    examiner_form: {
+      type: Sequelize.STRING,
+    },
+    student_sheet: {
+      type: Sequelize.STRING,
+    },
+    report_sheet: {
+      type: Sequelize.STRING,
+    },
+    faculty_sheet: {
+      type: Sequelize.STRING,
+    },
+    examiner_sheet: {
       type: Sequelize.STRING,
     }
   }, {
-      cascade: false,
+      cascade: false
     });
-  return Examiner;
+  return Setting;
 }

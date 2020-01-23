@@ -1,60 +1,113 @@
-const db = require('./connection')
-const Batch = require('../models/Batch')
-const Settings = require('../models/Settings')
-const Faculty = require('../models/Faculty')
+/*
+* Drops all tables and recreates the database
+*/
+'use strict'
+/*
+* Imports
+*/
+const db = require('./db')
 
-db.sync({ force: true })
+/*
+* All tables are dropped.
+*/
+//db.sequelize.drop();
+/*
+* database is synced.
+*/
+db.sequelize.sync({ force: true })
   .then(() => {
     console.log('Databases and Tables Synced')
-    Batch.create(({
-      id: '19PW',
-      code: 'PW',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2019',
-      color: "red",
-      session: 'Odd',
-      course: "MSc. Software Systems",
-      active: true,
-    }))
-    Batch.create({
-      id: '19PT',
-      code: 'PT',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2019',
-      color: "blue",
-      session: 'Odd',
-      course: "MSc. Theoretical Computer Science",
-      active: true,
+    /*
+    * Redundant Creates.
+    *
+    * Only for development. Will be removed as an when we phase to production.
+    */
+    db.faculty.create({
+      id: 'admin',
+      password: 'admin',
+      role: 'Admin',
+      name: 'Administrator'
+
+    }).then(() => {
+      db.course.bulkCreate([{
+        id: 'PW',
+        name: 'MSc. Software Systems',
+      }, {
+        id: 'PT',
+        name: 'MSc. Theoretical Computer Science',
+      }, {
+        id: 'PD',
+        name: 'MSc. Data Science',
+      }, {
+        id: 'PA',
+        name: 'MSc. Applied Mathematics',
+      }]).then((course) => {
+        db.batch.bulkCreate([
+          {
+            id: '15PW_VII',
+            batch_code: '15PW',
+            semester: 'VII',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2015',
+            color: "red",
+            active: true,
+          }, {
+            id: '15PT_VII',
+            batch_code: '15PT',
+            semester: 'VII',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2015',
+            color: "blue",
+            active: true,
+          }, {
+            id: '15PD_VII',
+            batch_code: '15PD',
+            semester: 'VII',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2015',
+            color: "green",
+            active: true,
+          }, {
+            id: '14PW_X',
+            batch_code: '14PW',
+            semester: 'X',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2014',
+            color: "red",
+            active: true,
+          }, {
+            id: '14PT_X',
+            batch_code: '14PT',
+            semester: 'X',
+            count: 40,
+            email: 'contact@googlegroups.com',
+            year: '2014',
+            color: "yellow",
+            active: true,
+          }
+        ]).then((batches) => {
+          batches[0].setCourse(course[0]);
+          batches[1].setCourse(course[1]);
+          batches[2].setCourse(course[2]);
+          batches[3].setCourse(course[0]);
+          batches[4].setCourse(course[1]);
+          db.faculty.findOne({ where: { id: "admin" } })
+            .then((tutor) => {
+              batches[0].setTutor(tutor);
+              batches[1].setTutor(tutor);
+              batches[2].setTutor(tutor);
+              batches[3].setTutor(tutor);
+              batches[4].setTutor(tutor);
+            })
+        })
+      })
     })
-    Batch.create({
-      id: '19PD',
-      code: 'PD',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2019',
-      color: "green",
-      session: 'Odd',
-      course: "MSc. Data Science",
-      active: true,
-    })
-    Batch.create({
-      id: '19PA',
-      code: 'PA',
-      count: 40,
-      tutor: "Alien",
-      email: 'contact@googlegroups.com',
-      year: '2019',
-      color: "yellow",
-      session: 'Even',
-      course: "MSc. Applied Science",
-      active: true,
-    })
-    Settings.create({
+
+    db.setting.create({
       id: 1,
       session: 'Odd',
       count: 120,
@@ -69,11 +122,6 @@ db.sync({ force: true })
       report_sheet: 'https://docs.google.com/sheets',
       examiner_sheet: 'https://docs.google.com/sheets',
     })
-    Faculty.create({
-      id: 'admin',
-      pass: 'admin',
-      role: 'ADMIN',
-      name: 'Administrator'
-    })
+
   })
   .catch()

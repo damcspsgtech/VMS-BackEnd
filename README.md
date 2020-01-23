@@ -1,14 +1,14 @@
 # osiris
-
+[![Build Status](https://travis-ci.org/DAMCS/osiris.svg?branch=master)](https://travis-ci.org/DAMCS/osiris)
 ## Table of Contents
 - [osiris](#osiris)
-  - [Table of Contents](#Table-of-Contents)
-  - [Introduction](#Introduction)
-  - [Installation](#Installation)
-  - [Usage](#Usage)
-  - [Features](#Features)
-  - [API's](#APIs)
-  - [Creators](#Creators)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Features](#features)
+  - [API's](#apis)
+  - [Creators](#creators)
   
 ## Introduction
 - This is the node.js server configured to serve [this](https://github.com/damcs/stepping-stone) react.js project
