@@ -1,4 +1,4 @@
-2/*
+/*
 * Handles response for the endpoint => /api/faculty/
 */
 'use strict'
@@ -97,7 +97,6 @@ facultyRouter.post('/update', (req, res) => {
         })
     })
 })
-
 /*
 * Exports
 */
