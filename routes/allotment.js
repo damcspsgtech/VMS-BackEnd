@@ -5,7 +5,6 @@
 /*
 * Imports
 */
-const db = require('../config/db')
 const express = require('express');
 const allotmentRouter = express.Router();
 /*

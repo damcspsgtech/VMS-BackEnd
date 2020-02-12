@@ -5,15 +5,15 @@
 /*
 * Imports
 */
-const db = require('../config/db')
 const express = require('express');
 const facultyRouter = express.Router();
+const repo = require('../repos');
+
 /*
 * Retrieves Faculty List.
 */
 facultyRouter.get('/', (req, res) => {
-  db.faculty.scope('faculty').findAll({
-  })
+  repo.facultyRepo.getNonAdminFaculties()
     .then((object) => {
       if (object !== null) {
         res.send({
@@ -29,8 +29,7 @@ facultyRouter.get('/', (req, res) => {
     })
 });
 facultyRouter.get('/guide', (req, res) => {
-  db.faculty.scope(['faculty', 'guide']).findAll({
-  })
+  repo.facultyRepo.getAllGuides()
     .then((guides) => {
       if (guides !== null && guides !== undefined) {
         res.send({
@@ -47,24 +46,9 @@ facultyRouter.get('/guide', (req, res) => {
 });
 
 facultyRouter.post('/search', (req, res) => {
-  db.faculty.scope('faculty').findAll({
-    where: {
-      [db.Sequelize.Op.and]: {
-        is_guide: {
-          [db.Sequelize.Op.in]: [true, (req.body.filter_guide === true ? true : false)]
-        },
-        [db.Sequelize.Op.or]: {
-          name: {
-            [db.Sequelize.Op.like]: '%' + req.body.search + '%',
-          },
-          id: {
-            [db.Sequelize.Op.like]: '%' + req.body.search + '%',
-          }
-        }
-      }
-    }
-  })
+  repo.facultyRepo.filterFaculties(req.body.search, req.body.filter_guide)
     .then((faculty) => {
+      console.log(faculty)
       if (faculty !== null) {
         res.send({
           result: 'success',
@@ -75,27 +59,19 @@ facultyRouter.post('/search', (req, res) => {
 })
 
 facultyRouter.post('/update', (req, res) => {
-  db.faculty.findOne({
-    where: {
-      id: req.body.id,
-    }
-  })
-    .then((faculty) => {
-      faculty.update({
-        is_guide: req.body.is_guide,
+  repo.facultyRepo.updateGuide(req.body.id, req.body.is_guide)
+    .then(() => {
+      res.send({
+        result: 'success'
       })
-        .then(() => {
-          res.send({
-            result: 'success'
-          })
-        })
-        .catch((error) => {
-          res.send({
-            result: 'failed',
-            error,
-          })
-        })
     })
+    .catch((error) => {
+      res.send({
+        result: 'failed',
+        error,
+      })
+    })
+
 })
 /*
 * Exports

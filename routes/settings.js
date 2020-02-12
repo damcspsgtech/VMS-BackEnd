@@ -6,30 +6,29 @@
 * Imports
 */
 const express = require('express');
-const db = require('../config/db');
 const settingRouter = express.Router();
+const repo = require('../repos');
 
 /*
 * *GET* response to GENERIC settings request.
 */
 settingRouter.get('/', (req, res) => {
-  /*
-  * Returns the one row from Setting.
-  */
-	db.setting.findOne({ where: { id: 1 } }).then((generic) => res.send(generic))
+	/*
+	* Returns the one row from Setting.
+	*/
+	repo.settingsRepo.getGenericSetting().then((generic) => res.send(generic))
 });
 /*
 * *POST* response to setting generic.
 */
 settingRouter.post('/', (req, res) => {
-	db.batch.findAll({ where: { active: true } })
+	repo.batchRepo.getAllActiveBatch()
 		.then((batches) => {
 			let sum = 0;
 			for (batch in batches) {
 				sum += batch.count;
 			}
-			db.setting.upsert({
-				id: '1',
+			var data = {
 				count: sum,
 				student_form: req.body.student_form,
 				report_form: req.body.report_form,
@@ -39,7 +38,8 @@ settingRouter.post('/', (req, res) => {
 				faculty_sheet: req.body.faculty_sheet,
 				examiner_sheet: req.body.examiner_sheet,
 				student_sheet: req.body.student_sheet,
-			})
+			};
+			repo.settingsRepo.updateGenericSettings(data)
 				.then(() => res.send('Generic Settings have been updated!'))
 		})
 })
@@ -49,10 +49,7 @@ settingRouter.post('/', (req, res) => {
 * *GET* response to batch setting request.
 */
 settingRouter.get('/batch', (req, res) => {
-	db.batch.findAll({
-		order: [['id', 'DESC']],
-		include: ['Tutor', 'Course'],
-	})
+	repo.batchRepo.getAllBatchDetails()
 		.then((batches) => {
 			if (batches !== null) {
 				res.send({
@@ -69,17 +66,16 @@ settingRouter.get('/batch', (req, res) => {
 		});
 });
 settingRouter.post('/batch/update', (req, res) => {
-	db.batch.upsert({
+	var data = {
 		id: req.body.batch_id,
 		count: req.body.batch_count,
 		email: req.body.batch_email,
 		color: req.body.batch_color,
 		active: req.body.batch_active,
-	}, {
-			returning: true
-		})
-		.then(([batch, created]) => {
-			batch.setTutor(req.body.batch_tutor);
+		batch_tutor: req.body.batch_tutor
+	};
+	repo.batchRepo.updateBatch(data)
+		.then(() => {
 			res.send({
 				result: 'success'
 			})
@@ -90,10 +86,10 @@ settingRouter.post('/batch/update', (req, res) => {
 
 })
 settingRouter.post('/batch/add', (req, res) => {
-	db.course.findOne({ where: { id: req.body.course_id } })
+	repo.courseRepo.getCourseById(req.body.course_id)
 		.then((course) => {
 			if (course !== null) {
-				db.batch.upsert({
+				var data = {
 					id: (req.body.batch_year).slice(2, 4) + req.body.course_id + '_' + req.body.batch_semester,
 					batch_code: (req.body.batch_year).slice(2, 4) + req.body.course_id,
 					count: 40,
@@ -102,21 +98,16 @@ settingRouter.post('/batch/add', (req, res) => {
 					active: false,
 					semester: req.body.batch_semester,
 					year: req.body.batch_year,
-				}, {
-						returning: true,
+					course: course,
+
+				};
+				repo.batchRepo.addBatch(data)
+					.then(() => {
+						res.send({
+							result: 'success'
+						})
 					})
-					.then(([batch, created]) => {
-						batch.setCourse(course);
-						db.faculty.findOne({ where: { id: 'admin' } })
-							.then((tutor) => {
-								batch.setTutor(tutor)
-							})
-							.then(() => {
-								res.send({
-									result: 'success'
-								})
-							})
-					})
+
 			}
 			else {
 				res.send({
@@ -129,7 +120,7 @@ settingRouter.post('/batch/add', (req, res) => {
 		}));
 })
 settingRouter.post('/batch/delete', (req, res) => {
-	db.batch.destroy({ where: { id: req.body.batch_id + '_' + req.body.batch_semester } })
+	repo.batchRepo.deleteBatch(req.body.batch_id + '_' + req.body.batch_semester)
 		.then(() => {
 			res.send({
 				result: 'success',
@@ -140,7 +131,7 @@ settingRouter.post('/batch/delete', (req, res) => {
 * Course Routes
 */
 settingRouter.get('/course', (req, res) => {
-	db.course.findAll({ order: [['id', 'ASC']] })
+	repo.courseRepo.findAllCourse()
 		.then((courses) => {
 			if (courses === null) {
 				res.send({
@@ -160,10 +151,10 @@ settingRouter.get('/course', (req, res) => {
 		}))
 })
 settingRouter.post('/course/add', (req, res) => {
-	db.course.upsert({
-		id: req.body.course_id,
-		name: req.body.course_name,
-	})
+	repo.courseRepo.addCourse(
+		req.body.course_id,
+		req.body.course_name
+	)
 		.then(() => res.send({
 			result: 'success'
 		}))
@@ -172,7 +163,7 @@ settingRouter.post('/course/add', (req, res) => {
 		}))
 })
 settingRouter.post('/course/delete', (req, res) => {
-	db.course.destroy({ where: { id: req.body.course_id } })
+	repo.courseRepo.deleteCourse(req.body.course_id)
 		.then((rows) => {
 			if (rows > 0) {
 				res.send({
