@@ -39,6 +39,7 @@ settingRouter.post('/', (req, res) => {
 				faculty_sheet: req.body.faculty_sheet,
 				examiner_sheet: req.body.examiner_sheet,
 				student_sheet: req.body.student_sheet,
+				faculty_images: req.body.faculty_images,
 			})
 				.then(() => res.send('Generic Settings have been updated!'))
 		})

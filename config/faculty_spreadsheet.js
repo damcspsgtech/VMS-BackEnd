@@ -8,7 +8,9 @@
 * Imports
 */
 const GoogleSpreadSheet = require('google-spreadsheet');
-const db = require('./db')
+const db = require('./db');
+const fs = require("fs");
+directoryPath = "G:\\osiris\\Faculty_Images\\";
 
 /*
 * Secret Key for OAuth 2.0 
@@ -49,27 +51,55 @@ db.setting.findOne({ where: { id: 1 } })
           /*
           * Updates or Inserts parsed row into model Faculty.
           */
+
           db.faculty.create({
-            id: row.employeeid.toUpperCase(),
-            password: row.employeeid.toUpperCase(),
+            id: row.employeeid.toLowerCase(),
+            password: row.employeeid.toLowerCase(),
             title: row.title,
             name: row.fullname.toUpperCase(),
             designation: row.designation.toUpperCase(),
-            short_name: row.shortnameusedindepartment.toUpperCase(),
+            short_name: row.shortnameusedindepartment.toLowerCase(),
             core_competency: row.corecompetency.toUpperCase(),
-            email: row.emailid,
+            email: row.emailid.toLowerCase(),
             phone_number: row.phonenumber,
             areas_of_interest: row.areaofinterestforprojectguidance.toUpperCase(),
-            role: 'Guest',
+            role: 'guest',
             is_guide: false,
             allocated_count: 0,
           })
             .catch((err) => {
               if (err.name === 'SequelizeUniqueConstraintError') {
-                console.log('Faculty ' + err.errors[0].value + ' Exists')
+                return
+                //console.log('Faculty ' + err.errors[0].value + ' Exists')
               }
             })
         })
       })
     })
   })
+
+// function getFileID(object) {
+//   object = object.split('.')[0]
+//   return object
+// }
+
+
+// fs.readdir(directoryPath, function (err, files) {
+//   //handling error
+//   if (err) {
+//     return console.log('Unable to scan directory: ' + err);
+//   }
+//   //listing all files using forEach
+//   files.forEach(function (file) {
+
+//     db.faculty.update({
+//       image: fs.readFileSync(directoryPath + file)
+//     },
+//       { where: { id: getFileID(file) }}).then(res =>{
+//         console.log("getFIle ",getFileID(file))
+//       })
+//        .catch((err) => {
+//         console.log('Faculty images error ' +directoryPath+" " +file+ " "+ getFileID(file) )
+//       })
+//   });
+// });

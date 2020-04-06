@@ -37,6 +37,8 @@ node_modules/
 jspm_packages/
 data/
 data/db.sqlite
+Faculty_Images/
+Images/
 
 # TypeScript v1 declaration files
 typings/

@@ -8,6 +8,10 @@ module.exports = (db, Sequelize) => {
     },
     roll_no: {
       type: Sequelize.STRING,
+    //   references: {
+    //     model: 'StudentImages', // 'persons' refers to table name
+    //     key: 'StudentId', // 'id' refers to column name in persons table
+    //  }
     },
     semester: {
       type: Sequelize.STRING

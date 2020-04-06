@@ -25,6 +25,7 @@ const studentsRouter = require("./routes/students");
 const settingRouter = require("./routes/settings");
 const facultyRouter = require("./routes/faculty");
 const allotmentRouter = require("./routes/allotment");
+const studentImagesRouter = require("./routes/studentImages");
 /*
  * Data Access Object.
  *
@@ -127,6 +128,7 @@ app.use("/api/faculty", facultyRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/settings", settingRouter);
 app.use("/api/allotment", allotmentRouter);
+app.use("/api/studentImages",studentImagesRouter)
 /*
  * Exports
  */

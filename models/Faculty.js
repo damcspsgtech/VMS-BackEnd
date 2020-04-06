@@ -41,25 +41,35 @@ module.exports = (db, Sequelize) => {
     },
     phone_number: {
       type: Sequelize.STRING,
+    },
+    image: {
+      type: Sequelize.BLOB,
+      get() {
+        const data = this.getDataValue('image')
+        return data ? data.toString('base64') : ''
+      },
+      set(val) {
+        this.setDataValue('image', val);
+      }
     }
   }, {
-      cascade: false,
-      hooks: {
-        beforeCreate: (faculty) => {
-          const salt = bcrypt.genSaltSync();
-          faculty.password = bcrypt.hashSync(faculty.password, salt);
-        },
-        beforeUpdate: (faculty) => {
-          const salt = bcrypt.genSaltSync();
-          faculty.password = bcrypt.hashSync(faculty.password, salt);
-        }
+    cascade: false,
+    hooks: {
+      beforeCreate: (faculty) => {
+        const salt = bcrypt.genSaltSync();
+        faculty.password = bcrypt.hashSync(faculty.password, salt);
       },
-      instanceMethods: {
-        validPassword: (password) => {
-          return bcrypt.compareSync(password, this.password);
-        }
+      beforeUpdate: (faculty) => {
+        const salt = bcrypt.genSaltSync();
+        faculty.password = bcrypt.hashSync(faculty.password, salt);
       }
+    },
+    instanceMethods: {
+      validPassword: (password) => {
+        return bcrypt.compareSync(password, this.password);
+      }
+    }
 
-    });
+  });
   return Faculty;
 }

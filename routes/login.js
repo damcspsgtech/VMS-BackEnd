@@ -8,6 +8,7 @@
 const express = require('express');
 const loginRouter = express.Router();
 const db = require('../config/db');
+const bcrypt = require('bcrypt');
 
 /*
 * Validates login.
@@ -20,12 +21,13 @@ loginRouter.post('/', (req, res) => {
     }
   }).then((user) => {
     if (user !== null && user !== undefined) {
-      if (user.pass === req.body.password) {
+      if (bcrypt.compareSync(req.body.password,user.password)){
         req.session.user = user.id;
         req.session.role = user.role;
         req.session.isguide = user.is_guide;
         res.send({
-          result: 'success'
+          result: 'success',
+          role: user.role
         });
       }
       else {

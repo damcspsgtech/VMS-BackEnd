@@ -28,6 +28,9 @@ module.exports = (db, Sequelize) => {
     },
     examiner_sheet: {
       type: Sequelize.STRING,
+    },
+    faculty_images: {
+      type: Sequelize.STRING,
     }
   }, {
       cascade: false
