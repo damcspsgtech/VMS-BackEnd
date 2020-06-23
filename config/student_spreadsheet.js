@@ -30,6 +30,30 @@ function parseSheetURL(object) {
 	return object
 }
 
+// function getFileID(object) {
+// 	object = object.split('.')[0]
+// 	console.log(object)
+// 	return object
+//   }
+  
+//   let rec=[]  
+//   fs.readdir(StudImgPath, function (err, files) {
+// 	//handling error
+// 	if (err) {
+// 	  return console.log('Unable to scan directory: ' + err);
+// 	}
+// 	//listing all files using forEach
+// 	files.forEach(function (file) {
+// 		rec.push({
+// 			StudentId : getFileID(file),
+// 			image: fs.readFileSync(StudImgPath + file)
+// 	  })
+		  
+// 	})
+// 	/*  */console.log("recordss: ",rec)
+//   db.studentImages.bulkCreate(rec)
+//   });
+
 /*
 * Expects one row that holds the whole application's Settings whose id is 1.
 *
@@ -80,7 +104,7 @@ return db.setting.findOne({ where: { id: 1 } })
 							let filePath = "./images/"+student.roll_no;
 							console.log(filePath)
 							
-							drive(fileId,filePath); 
+							//drive(fileId,filePath); 
 							
 							db.studentImages.findOne({
 								where: {
@@ -110,29 +134,6 @@ return db.setting.findOne({ where: { id: 1 } })
 	})
 
 
-	// function getFileID(object) {
-	// 	object = object.split('.')[0]
-	// 	console.log(object)
-	// 	return object
-	//   }
-	  
-	//   var rec=[]
-	  
-	//   fs.readdir(StudImgPath, function (err, files) {
-	// 	//handling error
-	// 	if (err) {
-	// 	  return console.log('Unable to scan directory: ' + err);
-	// 	}
-	// 	//listing all files using forEach
-	// 	files.forEach(function (file) {
-	// 		rec.push({
-	// 			StudentId : getFileID(file),
-	// 			image: fs.readFileSync(StudImgPath + file)
-	// 	  })
-		 	 
-	// 	})
-	// 	/*  */console.log("recordss: ",rec)
-	//   db.studentImages.bulkCreate(rec)
-	//   });
+	
 	  
 	  

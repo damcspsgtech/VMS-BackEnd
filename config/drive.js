@@ -14,7 +14,7 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.readonly'];
 const TOKEN_PATH = 'token.json';
 
 // Load client secrets from a local file.
-function downloadFile(fileId, filePath) {
+function drive(fileId, filePath) {
   fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
@@ -84,32 +84,32 @@ function getAccessToken(oAuth2Client, callback) {
 
 
 function getFile(auth, fileId, filePath) {
-  // let drive = google.drive({ version: 'v3', auth });
+  let drive = google.drive({ version: 'v3', auth });
 
-  // let pathname = filePath+".png";
-  // let dest = fs.createWriteStream(pathname);
-  // sleep.msleep(1)
-  // drive.files.get({ fileId: fileId, alt: 'media' }, { responseType: 'stream' },
-  // function (err, res) {
-  //   if (err){
+  let pathname = filePath+".png";
+  let dest = fs.createWriteStream(pathname);
+  sleep.msleep(1)
+  drive.files.get({ fileId: fileId, alt: 'media' }, { responseType: 'stream' },
+  function (err, res) {
+    if (err){
 
-  //     return
-  //   }
-  //   res.data.on('end', () => {
-  //     console.log('Done');
-  //   })
-  //     .on('error', err => {
-  //       console.log('Error', err);
-  //     })
-  //     .pipe(dest);
+      return
+    }
+    res.data.on('end', () => {
+      console.log('Done');
+    })
+      .on('error', err => {
+        console.log('Error', err);
+      })
+      .pipe(dest);
 
-  // });
+  });
   
   
   
 }
 
 
-module.exports = downloadFile
+module.exports = drive
 
 

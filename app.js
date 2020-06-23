@@ -56,7 +56,7 @@ db.sequelize
  * YOU WILL NOT BE ABLE TO RETRIEVE DATA FROM OLDER GOOGLE SPREADSHEETS.
  * IF YOU WISH TO DO SO UPDATE GOOGLE SHEET URLS THROUGH FRONTEND, AFTER THE PURGE.
  */
-// const purge = require('./config/refresh_db')
+ // const purge = require('./config/refresh_db')
 
 /*
  * Spreadsheet Refreshes

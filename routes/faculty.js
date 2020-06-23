@@ -8,7 +8,7 @@
 const express = require('express');
 const facultyRouter = express.Router();
 const repo = require('../repos');
-
+const db = require('../config/db');
 /*
 * Retrieves Faculty List.
 */

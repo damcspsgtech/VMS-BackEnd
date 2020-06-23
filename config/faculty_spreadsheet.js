@@ -28,12 +28,13 @@ function parseSheetURL(object) {
   return object
 }
 
+
 /*
 * Expects one row that holds the whole application's Settings whose id is 1.
 *
 * This row holds the required Sheet URI
 */
-return db.setting.findOne({ where: { id: 1 } })
+db.setting.findOne({ where: { id: 1 } })
   .then((object) => {
     /*
     * GoogleSpreadSheet Object, handles google-spreadsheets api calls.
@@ -53,8 +54,8 @@ return db.setting.findOne({ where: { id: 1 } })
           */
 
           db.faculty.create({
-            id: row.employeeid.toLowerCase(),
-            password: row.employeeid.toLowerCase(),
+            id: row.employeeid.toUpperCase(),
+            password: row.employeeid.toUpperCase(),
             title: row.title,
             name: row.fullname.toUpperCase(),
             designation: row.designation.toUpperCase(),
@@ -77,29 +78,29 @@ return db.setting.findOne({ where: { id: 1 } })
       })
     })
   })
+  // function getFileID(object) {
+  //   object = object.split('.')[0]
+  //   return object
+  // }
+  
+  
+  // fs.readdir(directoryPath, function (err, files) {
+  //   //handling error
+  //   if (err) {
+  //     return console.log('Unable to scan directory: ' + err);
+  //   }
+  //   //listing all files using forEach
+  //   files.forEach(function (file) {
+  
+  //     db.faculty.update({
+  //       image: fs.readFileSync(directoryPath + file)
+  //     },
+  //       { where: { id: getFileID(file) }}).then(res =>{
+  //         console.log("getFIle ",getFileID(file))
+  //       })
+  //        .catch((err) => {
+  //         console.log('Faculty images error ' +directoryPath+" " +file+ " "+ getFileID(file) )
+  //       })
+  //   });
+  // });
 
-// function getFileID(object) {
-//   object = object.split('.')[0]
-//   return object
-// }
-
-
-// fs.readdir(directoryPath, function (err, files) {
-//   //handling error
-//   if (err) {
-//     return console.log('Unable to scan directory: ' + err);
-//   }
-//   //listing all files using forEach
-//   files.forEach(function (file) {
-
-//     db.faculty.update({
-//       image: fs.readFileSync(directoryPath + file)
-//     },
-//       { where: { id: getFileID(file) }}).then(res =>{
-//         console.log("getFIle ",getFileID(file))
-//       })
-//        .catch((err) => {
-//         console.log('Faculty images error ' +directoryPath+" " +file+ " "+ getFileID(file) )
-//       })
-//   });
-// });
