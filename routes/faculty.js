@@ -48,7 +48,6 @@ facultyRouter.get('/guide', (req, res) => {
 facultyRouter.post('/search', (req, res) => {
   repo.facultyRepo.filterFaculties(req.body.search, req.body.filter_guide)
     .then((faculty) => {
-      console.log(faculty)
       if (faculty !== null) {
         res.send({
           result: 'success',
@@ -59,7 +58,11 @@ facultyRouter.post('/search', (req, res) => {
 })
 
 facultyRouter.post('/update', (req, res) => {
-  repo.facultyRepo.updateGuide(req.body.id, req.body.is_guide)
+  Promise
+    .all([
+      repo.facultyRepo.updateGuide(req.body.id, req.body.is_guide), 
+      repo.allotmentRepo.updateGuide(req.body.id, req.body.is_guide)
+    ])
     .then(() => {
       res.send({
         result: 'success'

@@ -25,6 +25,13 @@ class StudentRepo {
         })
     }
 
+    getAllActiveStudentIds(){
+        return db.student.scope('active').findAll({
+            order: [['roll_no', 'ASC']],
+            attributes: ['id']
+        })
+    }
+
 }
 
 class FacultyRepo {
@@ -38,6 +45,18 @@ class FacultyRepo {
 
     getAllGuides() {
         return db.faculty.scope(['faculty', 'guide']).findAll({})
+    }
+
+    getAllGuidesWithAllotment(){
+        return db.faculty.scope(['faculty', 'guide']).findAll({
+            include:['Alloted']
+        })
+    }
+
+    getAllGuidesIds() {
+        return db.faculty.scope(['faculty', 'guide']).findAll({
+            attributes: ['id']
+        })
     }
 
     getNonAdminFaculties() {
@@ -99,8 +118,8 @@ class BatchRepo {
     }
 
     updateBatch(data) {
-        db.batch.upsert({
-            id: data.batch_id,
+        return db.batch.upsert({
+            id: data.id,
             count: data.batch_count,
             email: data.batch_email,
             color: data.batch_color,
@@ -178,16 +197,79 @@ class CourseRepo {
     }
 }
 
+class AllotmentRepo {
+    updateGuide(guide_id, guide_status){
+        return db.allotmentsnapshot.findOne({
+            where: {
+                id: 1
+            },
+            attributes: ['guide']
+        })
+            .then((data) => {
+                const res = data.dataValues.guide
+                if(guide_status){
+                    res.push(guide_id)
+                }
+                else{
+                    const index = res.indexOf(guide_id)
+                    res.splice(index, 1)
+                }
+                return db.allotmentsnapshot.upsert({
+                    id: 1,
+                    guide: res
+                })
+            })
+    }
+
+    updateAllotment(guideId, students){
+        return db.faculty.findOne({
+            where: {id: guideId},
+            include: ['Alloted'],
+        }).then(data => {
+            students.forEach(element => {
+                db.student.findOne({
+                        where: {
+                            id: element
+                        }
+                    }).then(student =>{
+                        data.addAlloted(student)
+                    })
+                    
+            })
+            
+            return data;
+        })
+    }
+
+    updateSnapshot(data){
+        return db.allotmentsnapshot.findOne({where: {id: 1}}).then(snapshot => {
+            snapshot.student = data.students
+            snapshot.guide = data.guides
+            snapshot.allotment1 = data.allotment1
+            snapshot.allotment2 = data.allotment2
+            return snapshot.save() 
+        })
+        
+    }
+    
+
+    getAllotmentSnapshot(){
+        return db.allotmentsnapshot.findAll({})
+    }
+}
+
 const studentRepo = new StudentRepo();
 const facultyRepo = new FacultyRepo();
 const batchRepo = new BatchRepo();
 const settingsRepo = new SettingsRepo();
 const courseRepo = new CourseRepo();
+const allotmentRepo = new AllotmentRepo();
 
 module.exports = {
     studentRepo: studentRepo,
     facultyRepo: facultyRepo,
     batchRepo: batchRepo,
     settingsRepo: settingsRepo,
-    courseRepo: courseRepo
+    courseRepo: courseRepo,
+    allotmentRepo: allotmentRepo
 }
