@@ -31,7 +31,7 @@ function parseSheetURL(object) {
 *
 * This row holds the required Sheet URI
 */
-db.setting.findOne({ where: { id: 1 } })
+return db.setting.findOne({ where: { id: 1 } })
 	.then((object) => {
     /*
     * GoogleSpreadSheet Object, handles google-spreadsheets api calls.
@@ -59,7 +59,7 @@ db.setting.findOne({ where: { id: 1 } })
 						phone_number: row.mobilenumber,
 						project_category: row.projectcategory.toUpperCase(),
 						organization_name: row.nameoftheorganization.toUpperCase(),
-						postal_address: row.fullpostaladdressoftheorganization.toUpperCase(),
+						postal_address: " ", //row.fullpostaladdressoftheorganization.toUpperCase(),
 						address_url: row.shorturlforgooglemaplocationoftheorganization,
 						mentor_name: row.nameofthementor.toUpperCase(),
 						mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),

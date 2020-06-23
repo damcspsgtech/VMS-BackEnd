@@ -31,7 +31,7 @@ function parseSheetURL(object) {
 *
 * This row holds the required Sheet URI
 */
-db.setting.findOne({ where: { id: 1 } })
+return db.setting.findOne({ where: { id: 1 } })
   .then((object) => {
     /*
     * GoogleSpreadSheet Object, handles google-spreadsheets api calls.

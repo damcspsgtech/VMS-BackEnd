@@ -39,10 +39,17 @@ db.student = require('../models/Student')(sequelize, Sequelize);
 db.setting = require('../models/Setting')(sequelize, Sequelize);
 db.batch = require('../models/Batch')(sequelize, Sequelize);
 db.examiner = require('../models/Examiner')(sequelize, Sequelize);
+db.allotmentsnapshot = require('../models/AllotmentSnapshot')(sequelize, Sequelize);
 
 /*
 * Relations
 */
+db.faculty.belongsToMany(db.student, {
+  as: 'Alloted',
+  through: 'Allotment',
+})
+
+
 db.student.belongsToMany(db.faculty, {
   as: 'Guide',
   through: 'StudentGuide',
