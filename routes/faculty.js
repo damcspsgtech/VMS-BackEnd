@@ -28,6 +28,49 @@ facultyRouter.get('/', (req, res) => {
       }
     })
 });
+
+facultyRouter.get('/getRole', (req, res) => {
+    
+  db.faculty.findOne({
+      where: {id : req.query.id},
+      attributes: ['role'] 
+    })
+      .then((role) => {
+        if (role !== null && role !== undefined) {
+        //  console.log(role)
+          res.send({
+            result: 'success',
+            role
+          })
+        }
+        else {
+          res.send({
+            result: 'failed',
+          })
+        }
+      })
+  });
+
+facultyRouter.get('/getProfile', (req, res) => {
+    
+  db.faculty.scope(['faculty']).findOne({
+      where : {id : req.query.id}
+    })
+      .then((profile) => {
+        if (profile !== null && profile !== undefined) {
+        //  console.log(profile)
+          res.send({
+            result: 'success',
+            profile
+          })
+        }
+        else {
+          res.send({
+            result: 'failed',
+          })
+        }
+      })
+  });
 facultyRouter.get('/guide', (req, res) => {
   repo.facultyRepo.getAllGuides()
     .then((guides) => {

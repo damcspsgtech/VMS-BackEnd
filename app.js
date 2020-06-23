@@ -25,6 +25,7 @@ const studentsRouter = require("./routes/students");
 const settingRouter = require("./routes/settings");
 const facultyRouter = require("./routes/faculty");
 const allotmentRouter = require("./routes/allotment");
+const studentImagesRouter = require("./routes/studentImages");
 /*
  * Data Access Object.
  *
@@ -55,7 +56,7 @@ db.sequelize
  * YOU WILL NOT BE ABLE TO RETRIEVE DATA FROM OLDER GOOGLE SPREADSHEETS.
  * IF YOU WISH TO DO SO UPDATE GOOGLE SHEET URLS THROUGH FRONTEND, AFTER THE PURGE.
  */
-//const purge = require('./config/refresh_db')
+// const purge = require('./config/refresh_db')
 
 /*
  * Spreadsheet Refreshes
@@ -127,6 +128,7 @@ app.use("/api/faculty", facultyRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/settings", settingRouter);
 app.use("/api/allotment", allotmentRouter);
+app.use("/api/studentImages",studentImagesRouter)
 /*
  * Exports
  */

@@ -25,7 +25,7 @@ db.sequelize.sync({ force: true })
     db.faculty.create({
       id: 'admin',
       password: 'admin',
-      role: 'Admin',
+      role: 'admin',
       name: 'Administrator'
 
     }).then(() => {
@@ -121,6 +121,7 @@ db.sequelize.sync({ force: true })
       faculty_sheet: 'https://docs.google.com/spreadsheets/d/1nlYqgnmxiLfkGiIEyBUZ4IlFOVTrwok4WUMBHFFl84c',
       report_sheet: 'https://docs.google.com/sheets',
       examiner_sheet: 'https://docs.google.com/sheets',
+      faculty_images: '18sJfl3Jr-uBBstvjVbBt_4GBxdMb68e9',
     })
 
   })

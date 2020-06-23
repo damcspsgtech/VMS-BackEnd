@@ -10,6 +10,7 @@ const students = require('./student_spreadsheet');
 const faculty = require('./faculty_spreadsheet');
 const repo = require('../repos');
 const db = require('./db')
+// const facultyImages =  require('./drive');
 
 
 Promise.all([students, faculty]).then(() => {
@@ -35,4 +36,5 @@ Promise.all([students, faculty]).then(() => {
     })
 
 })
+
 

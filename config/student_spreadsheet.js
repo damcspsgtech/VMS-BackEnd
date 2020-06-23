@@ -10,6 +10,10 @@
 */
 const GoogleSpreadSheet = require('google-spreadsheet');
 const db = require('./db')
+const drive = require('./drive')
+const fs = require('fs');
+
+StudImgPath = "G:\\osiris\\images\\";
 
 /*
 * Secret Key for OAuth 2.0
@@ -59,8 +63,9 @@ return db.setting.findOne({ where: { id: 1 } })
 						phone_number: row.mobilenumber,
 						project_category: row.projectcategory.toUpperCase(),
 						organization_name: row.nameoftheorganization.toUpperCase(),
-						postal_address: " ", //row.fullpostaladdressoftheorganization.toUpperCase(),
+						postal_address:" ",// row.fullpostaladdressoftheorganization.toUpperCase(),
 						address_url: row.shorturlforgooglemaplocationoftheorganization,
+						address_city: row.cityname.toUpperCase(),
 						mentor_name: row.nameofthementor.toUpperCase(),
 						mentor_designation: row.mentorsdesignationteambuname.toUpperCase(),
 						mentor_email: row.emailofthementor,
@@ -71,13 +76,30 @@ return db.setting.findOne({ where: { id: 1 } })
 							returning: true
 						})
 						.then(([student, created]) => {
+							let fileId =  student.photo.split('https://drive.google.com/open?id=')[1];
+							let filePath = "./images/"+student.roll_no;
+							console.log(filePath)
+							
+							drive(fileId,filePath); 
+							
+							db.studentImages.findOne({
+								where: {
+									StudentId: student.roll_no
+								}
+							}
+							)
+								.then((res) => {
+									
+									student.setStudentImages(res)
+								})
 							db.batch.findOne({
 								where: {
 									id: student.roll_no.slice(0, 4).toUpperCase() + '_' + student.semester.toUpperCase(),
 									batch_code: student.roll_no.slice(0, 4).toUpperCase(),
 									semester: student.semester.toUpperCase()
 								}
-							})
+							}
+							)
 								.then((batch) => {
 									student.setBatch(batch)
 								})
@@ -86,3 +108,31 @@ return db.setting.findOne({ where: { id: 1 } })
 			})
 		})
 	})
+
+
+	// function getFileID(object) {
+	// 	object = object.split('.')[0]
+	// 	console.log(object)
+	// 	return object
+	//   }
+	  
+	//   var rec=[]
+	  
+	//   fs.readdir(StudImgPath, function (err, files) {
+	// 	//handling error
+	// 	if (err) {
+	// 	  return console.log('Unable to scan directory: ' + err);
+	// 	}
+	// 	//listing all files using forEach
+	// 	files.forEach(function (file) {
+	// 		rec.push({
+	// 			StudentId : getFileID(file),
+	// 			image: fs.readFileSync(StudImgPath + file)
+	// 	  })
+		 	 
+	// 	})
+	// 	/*  */console.log("recordss: ",rec)
+	//   db.studentImages.bulkCreate(rec)
+	//   });
+	  
+	  

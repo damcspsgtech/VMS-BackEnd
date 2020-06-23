@@ -66,21 +66,25 @@ class FacultyRepo {
     filterFaculties(searchString, filter_guide) {
         return db.faculty.scope('faculty').findAll({
             where: {
-                [db.Sequelize.Op.and]: {
-                    is_guide: {
-                        [db.Sequelize.Op.in]: [true, (filter_guide === true ? true : false)]
-                    },
-                    [db.Sequelize.Op.or]: {
-                        name: {
-                            [db.Sequelize.Op.like]: '%' + searchString + '%',
-                        },
-                        id: {
-                            [db.Sequelize.Op.like]: '%' + searchString + '%',
-                        }
-                    }
+              [db.Sequelize.Op.and]: {
+                is_guide: {
+                  [db.Sequelize.Op.in]: [true, (req.body.filter_guide === true ? true : false)]
+                },
+                [db.Sequelize.Op.or]: {
+                  name: {
+                    [db.Sequelize.Op.like]: '%' + req.body.search + '%',
+                  },
+                  id: {
+                    [db.Sequelize.Op.like]: '%' + req.body.search + '%',
+                  },
+                  short_name:{
+                    [db.Sequelize.Op.like]: '%' + req.body.search + '%',
+                  }
+        
                 }
+              }
             }
-        })
+          })
     }
 
     updateGuide(id, is_guide) {
@@ -173,6 +177,7 @@ class SettingsRepo {
             faculty_sheet: data.faculty_sheet,
             examiner_sheet: data.examiner_sheet,
             student_sheet: data.student_sheet,
+            faculty_images: data.faculty_images
         })
     }
 }
