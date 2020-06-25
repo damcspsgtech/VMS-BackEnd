@@ -63,22 +63,26 @@ class FacultyRepo {
         return db.faculty.scope('faculty').findAll({})
     }
 
-    filterFaculties(searchString, filter_guide) {
+    filterFaculties(searchString, filter_guide,filter_notguide) {
         return db.faculty.scope('faculty').findAll({
             where: {
               [db.Sequelize.Op.and]: {
+                // is_guide: {
+                //   [db.Sequelize.Op.in]: [true, (filter_guide === true ? true : true)]
+                // },
                 is_guide: {
-                  [db.Sequelize.Op.in]: [true, (req.body.filter_guide === true ? true : false)]
-                },
+                    [db.Sequelize.Op.in]: [filter_guide,!filter_notguide]
+                  },
                 [db.Sequelize.Op.or]: {
                   name: {
-                    [db.Sequelize.Op.like]: '%' + req.body.search + '%',
+                    [db.Sequelize.Op.like]: '%' + searchString + '%',
                   },
                   id: {
-                    [db.Sequelize.Op.like]: '%' + req.body.search + '%',
+                    [db.Sequelize
+                        .Op.like]: '%' + searchString + '%',
                   },
                   short_name:{
-                    [db.Sequelize.Op.like]: '%' + req.body.search + '%',
+                    [db.Sequelize.Op.like]: '%' + searchString + '%',
                   }
         
                 }

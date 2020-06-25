@@ -89,7 +89,7 @@ facultyRouter.get('/guide', (req, res) => {
 });
 
 facultyRouter.post('/search', (req, res) => {
-  repo.facultyRepo.filterFaculties(req.body.search, req.body.filter_guide)
+  repo.facultyRepo.filterFaculties(req.body.search, req.body.filter_guide,req.body.filter_notguide)
     .then((faculty) => {
       if (faculty !== null) {
         res.send({

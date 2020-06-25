@@ -54,10 +54,10 @@ db.setting.findOne({ where: { id: 1 } })
           */
 
           db.faculty.create({
-            id: row.employeeid.toUpperCase(),
-            password: row.employeeid.toUpperCase(),
+            id: row.employeeid.toLowerCase(),
+            password: row.employeeid.toLowerCase(),
             title: row.title,
-            name: row.fullname.toUpperCase(),
+            name: row.fullname.toLowerCase(),
             designation: row.designation.toUpperCase(),
             short_name: row.shortnameusedindepartment.toLowerCase(),
             core_competency: row.corecompetency.toUpperCase(),
@@ -95,7 +95,7 @@ db.setting.findOne({ where: { id: 1 } })
   //     db.faculty.update({
   //       image: fs.readFileSync(directoryPath + file)
   //     },
-  //       { where: { id: getFileID(file) }}).then(res =>{
+  //       { where: { id: getFileID(file).toLowerCase() }}).then(res =>{
   //         console.log("getFIle ",getFileID(file))
   //       })
   //        .catch((err) => {
