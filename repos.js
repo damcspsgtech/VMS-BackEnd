@@ -140,6 +140,15 @@ class BatchRepo {
             })
     }
 
+    findActiveTutor(tutor){
+        return db.batch.scope('tutor').findOne({
+            where: {
+                TutorId : tutor,
+                active: true,
+            }
+        })
+    }
+
     addBatch(data) {
         db.batch.upsert({
             id: data.id,
