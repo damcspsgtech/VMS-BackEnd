@@ -5,7 +5,14 @@
 /*
 * Imports
 */
-const express = require('express');
+var express = require('express')
+  , cors = require('cors')
+  , parse_post = require("parse-post");
+
+
+
+
+// const express = require('express');
 const loginRouter = express.Router();
 const repo = require('../repos');
 const bcrypt = require('bcrypt')
@@ -13,6 +20,25 @@ const bcrypt = require('bcrypt')
 /*
 * Validates login.
 */
+
+// Core module config 
+var corsOptions = {
+  origin: '*',
+  preflightContinue: true  // <- I am assuming this is correct 
+};
+
+loginRouter.use(cors(corsOptions));
+
+// Respond to option request with HTTP 200
+// ?? Why is this not answering my OPTION requests sufficiently ??
+loginRouter.options('*',function(req,res){
+  res.send(200);
+});
+
+loginRouter.listen(process.env.PORT, function(){
+  console.log('CORS-enabled web server listening on port ' + process.env.PORT);
+});
+
 loginRouter.post('/', (req, res) => {
   req.session.userid = req.body.username;
 
@@ -26,6 +52,7 @@ loginRouter.post('/', (req, res) => {
           req.session.isguide = user.is_guide;
           res.send({
             result: 'success',
+            userName: user.Tutor.id,
             role: 'tutor',
             batch: user.id,
           });
@@ -57,6 +84,7 @@ loginRouter.post('/', (req, res) => {
             req.session.isguide = user.is_guide;
             res.send({
               result: 'success',
+              userName: user.id,
               role: user.role,
               batch: ''
             });
