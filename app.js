@@ -82,22 +82,22 @@ const app = express();
  * App Configuration
  */
 
-var corsOptions = {
-  origin: '*',
-  preflightContinue: true  // <- I am assuming this is correct 
-};
+// var corsOptions = {
+//   origin: '*',
+//   preflightContinue: true  // <- I am assuming this is correct 
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
-// Respond to option request with HTTP 200
-// ?? Why is this not answering my OPTION requests sufficiently ??
-app.options('*',function(req,res){
-  res.send(200);
-});
+// // Respond to option request with HTTP 200
+// // ?? Why is this not answering my OPTION requests sufficiently ??
+// app.options('*',function(req,res){
+//   res.send(200);
+// });
 
-app.listen(process.env.PORT, function(){
-  console.log('CORS-enabled web server listening on port ' + process.env.PORT);
-});
+// app.listen(process.env.PORT, function(){
+//   console.log('CORS-enabled web server listening on port ' + process.env.PORT);
+// });
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(logger("dev"));
@@ -144,10 +144,10 @@ app.use((req, res, next) => {
  *
  */
 
-app.use("/api/index", cors(), indexRouter);
-app.use("/api/students", cors(), studentsRouter);
+app.use("/api/index", indexRouter);
+app.use("/api/students", studentsRouter);
 app.use("/api/faculty", facultyRouter);
-app.use("/api/login", cors(), loginRouter);
+app.use("/api/login", loginRouter);
 app.use("/api/settings", settingRouter);
 app.use("/api/allotment", allotmentRouter);
 app.use("/api/studentImages",studentImagesRouter)
