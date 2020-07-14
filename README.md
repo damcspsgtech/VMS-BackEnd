@@ -44,8 +44,9 @@ Read our API documentation at [API.md](API.md)
 
 ## Creators
 
-**Dhikshitha Ram**
-* [GitHub Profile](<https://github.com/dhikshitha>)
+**Aakash Hemadri**
+* [GitHub Profile](<https://github.com/aakashhemadri>)
+* [Personal Website](<https://aakashhemadri.github.io>)
 
-**Vandhana Sivakumar**
-* [GitHub Profile](<https://github.com/vandhanasiva>)
+**Akhilesh Ramakrishnan**
+* [GitHub Profile](<https://github.com/akhilramkee>)
