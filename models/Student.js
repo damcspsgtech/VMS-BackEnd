@@ -4,29 +4,7 @@ module.exports = (db, Sequelize) => {
   const Student = db.define('Student', {
     id: {
       type: Sequelize.STRING,
-      primaryKey: true
-    },
-    roll_no: {
-      type: Sequelize.STRING,
-    //   references: {
-    //     model: 'StudentImages', // 'persons' refers to table name
-    //     key: 'StudentId', // 'id' refers to column name in persons table
-    //  }
-    },
-    semester: {
-      type: Sequelize.STRING
-    },
-    name: {
-      type: Sequelize.STRING
-    },
-    email: {
-      type: Sequelize.STRING
-    },
-    photo: {
-      type: Sequelize.STRING
-    },
-    phone_number: {
-      type: Sequelize.STRING
+       primaryKey: true,
     },
     project_category: {
       type: Sequelize.STRING
@@ -34,14 +12,26 @@ module.exports = (db, Sequelize) => {
     organization_name: {
       type: Sequelize.STRING
     },
-    postal_address: {
-      type: Sequelize.STRING(1234)
+    addressLine1: {
+      type: Sequelize.STRING(1000)
+    },
+    addressLine2: {
+      type: Sequelize.STRING(1000)
+    },
+    city: {
+      type: Sequelize.STRING
+    },
+    state: {
+      type: Sequelize.STRING
+    },
+    country: {
+      type: Sequelize.STRING
+    },
+    zip: {
+      type: Sequelize.STRING
     },
     address_url: {
-      type: Sequelize.STRING(1234)
-    },
-    address_city: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING(500)
     },
     mentor_name: {
       type: Sequelize.STRING
@@ -52,17 +42,15 @@ module.exports = (db, Sequelize) => {
     mentor_email: {
       type: Sequelize.STRING
     },
-    project_domain_keywords: {
-      type: Sequelize.STRING(1234)
+    project_domain: {
+      type: Sequelize.STRING(1000)
     },
     project_title: {
-      type: Sequelize.STRING(1234)
+      type: Sequelize.STRING(500)
     },
     joined_date: {
-      type: Sequelize.STRING
+      type: Sequelize.DATE
     }
-  }, {
-      constraints: false,
-    });
+  });
   return Student;
 }

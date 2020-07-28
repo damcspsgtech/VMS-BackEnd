@@ -34,12 +34,11 @@ function parseSheetURL(object) {
 *
 * This row holds the required Sheet URI
 */
-db.setting.findOne({ where: { id: 1 } })
-  .then((object) => {
+
     /*
     * GoogleSpreadSheet Object, handles google-spreadsheets api calls.
     */
-    var document = new GoogleSpreadSheet(parseSheetURL(object.faculty_sheet));
+    var document = new GoogleSpreadSheet(parseSheetURL('https://docs.google.com/spreadsheets/d/1nlYqgnmxiLfkGiIEyBUZ4IlFOVTrwok4WUMBHFFl84c'));
     /*
     * Service Account Authorization using credentials.
     */
@@ -57,7 +56,7 @@ db.setting.findOne({ where: { id: 1 } })
             id: row.employeeid.toLowerCase(),
             password: row.employeeid.toLowerCase(),
             title: row.title,
-            name: row.fullname.toLowerCase(),
+            name: row.fullname.toUpperCase(),
             designation: row.designation.toUpperCase(),
             short_name: row.shortnameusedindepartment.toLowerCase(),
             core_competency: row.corecompetency.toUpperCase(),
@@ -65,42 +64,18 @@ db.setting.findOne({ where: { id: 1 } })
             phone_number: row.phonenumber,
             areas_of_interest: row.areaofinterestforprojectguidance.toUpperCase(),
             role: 'guest',
+            image_name: row.photo.toLowerCase(),
             is_guide: false,
             allocated_count: 0,
           })
             .catch((err) => {
               if (err.name === 'SequelizeUniqueConstraintError') {
                 return
-                //console.log('Faculty ' + err.errors[0].value + ' Exists')
               }
             })
         })
       })
     })
-  })
-  // function getFileID(object) {
-  //   object = object.split('.')[0]
-  //   return object
-  // }
-  
-  
-  // fs.readdir(directoryPath, function (err, files) {
-  //   //handling error
-  //   if (err) {
-  //     return console.log('Unable to scan directory: ' + err);
-  //   }
-  //   //listing all files using forEach
-  //   files.forEach(function (file) {
-  
-  //     db.faculty.update({
-  //       image: fs.readFileSync(directoryPath + file)
-  //     },
-  //       { where: { id: getFileID(file).toLowerCase() }}).then(res =>{
-  //         console.log("getFIle ",getFileID(file))
-  //       })
-  //        .catch((err) => {
-  //         console.log('Faculty images error ' +directoryPath+" " +file+ " "+ getFileID(file) )
-  //       })
-  //   });
-  // });
+
+
 

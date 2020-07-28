@@ -8,6 +8,8 @@
 const app = require('../app');
 const debugLib = require('debug');
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
 //Debug
 const debug = debugLib('osiris:server');
@@ -24,7 +26,14 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/project.amcspsgtech.in/privkey.pem'),
+  chain: fs.readFileSync('/etc/letsencrypt/live/project.amcspsgtech.in/fullchain.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/project.amcspsgtech.in/cert.pem')
+}
+
+
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.

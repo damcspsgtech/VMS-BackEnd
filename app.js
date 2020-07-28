@@ -18,18 +18,21 @@ var cors = require('cors')
 
 
 
+var  cors = require('cors')
+  , parse_post = require("parse-post");
+
 require("dotenv").config();
 
 /*
  * Import Routes
  */
-const indexRouter = require("./routes/index");
+
 const loginRouter = require("./routes/login");
 const studentsRouter = require("./routes/students");
 const settingRouter = require("./routes/settings");
 const facultyRouter = require("./routes/faculty");
-const allotmentRouter = require("./routes/allotment");
-const studentImagesRouter = require("./routes/studentImages");
+
+
 /*
  * Data Access Object.
  *
@@ -60,7 +63,7 @@ db.sequelize
  * YOU WILL NOT BE ABLE TO RETRIEVE DATA FROM OLDER GOOGLE SPREADSHEETS.
  * IF YOU WISH TO DO SO UPDATE GOOGLE SHEET URLS THROUGH FRONTEND, AFTER THE PURGE.
  */
- // const purge = require('./config/refresh_db')
+  //const purge = require('./config/refresh_db')
 
 /*
  * Spreadsheet Refreshes
@@ -77,6 +80,11 @@ const sync_all = require("./config/sync");
  * Initialize *app* as express object
  */
 const app = express();
+
+
+
+app.use(cors());
+
 
 /*
  * App Configuration
@@ -122,16 +130,7 @@ app.use(
   })
 );
 
-// This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
-// This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
-app.use((req, res, next) => {
-  if (req.cookies.id && !req.session.id) {
-    res.clearCookie("id");
-    res.clearCookie("name");
-    res.clearCookie("role");
-  }
-  next();
-});
+
 
 /*
  *
@@ -144,13 +143,13 @@ app.use((req, res, next) => {
  *
  */
 
-app.use("/api/index", indexRouter);
+
 app.use("/api/students", studentsRouter);
 app.use("/api/faculty", facultyRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/settings", settingRouter);
-app.use("/api/allotment", allotmentRouter);
-app.use("/api/studentImages",studentImagesRouter)
+
+
 /*
  * Exports
  */
