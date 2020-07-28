@@ -13,10 +13,10 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     addressLine1: {
-      type: Sequelize.STRING(1234)
+      type: Sequelize.STRING(1000)
     },
     addressLine2: {
-      type: Sequelize.STRING(1234)
+      type: Sequelize.STRING(1000)
     },
     city: {
       type: Sequelize.STRING
@@ -31,7 +31,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     address_url: {
-      type: Sequelize.STRING(1234)
+      type: Sequelize.STRING(500)
     },
     mentor_name: {
       type: Sequelize.STRING
@@ -43,10 +43,10 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.STRING
     },
     project_domain: {
-      type: Sequelize.STRING(1234)
+      type: Sequelize.STRING(1000)
     },
     project_title: {
-      type: Sequelize.STRING(1234)
+      type: Sequelize.STRING(500)
     },
     joined_date: {
       type: Sequelize.DATE
