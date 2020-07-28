@@ -36,23 +36,21 @@ db.Sequelize = Sequelize;
 */
 db.course = require('../models/Course')(sequelize, Sequelize);
 db.faculty = require('../models/Faculty')(sequelize, Sequelize);
-//db.facultyImages =  require('../models/FacultyImages')(sequelize,Sequelize)
+db.report =  require('../models/Report')(sequelize,Sequelize)
 db.student = require('../models/Student')(sequelize, Sequelize);
-db.studentImages =  require('../models/StudentImages')(sequelize,Sequelize);
+db.StudentPersonalInfo =  require('../models/StudentPersonalInfo')(sequelize,Sequelize);
 db.setting = require('../models/Setting')(sequelize, Sequelize);
 db.batch = require('../models/Batch')(sequelize, Sequelize);
 db.examiner = require('../models/Examiner')(sequelize, Sequelize);
-db.allotmentsnapshot = require('../models/AllotmentSnapshot')(sequelize, Sequelize);
+
 
 /*
 * Relations
 */
-db.faculty.belongsToMany(db.student, {
-  as: 'Alloted',
-  through: 'Allotment',
-})
-db.student.belongsTo(db.studentImages, {
-  as: 'StudentImages'
+
+db.student.belongsTo(db.StudentPersonalInfo, {
+  as: 'StudentPersonalInfo',
+  through:'roll_no'
 });
 
 
@@ -62,6 +60,7 @@ db.student.belongsToMany(db.faculty, {
 })
 
 db.student.belongsTo(db.batch, {
+  onDelete: 'cascade'
 });
 
 db.student.belongsToMany(db.examiner, {
@@ -72,6 +71,14 @@ db.student.belongsToMany(db.examiner, {
 db.batch.belongsTo(db.faculty, {
   as: 'Tutor',
 });
+
+db.report.belongsTo(db.student, {
+  foreignKey: 'id'
+});
+
+// db.Users.belongsTo(db.batch, {
+//   as: 'batch',
+// });
 
 db.batch.belongsTo(db.course, {
   as: 'Course',
@@ -87,8 +94,15 @@ db.student.addScope('active', {
     model: db.faculty,
     as: 'Guide',
   },{
-    model:db.studentImages,
-    as: 'StudentImages'
+    model:db.StudentPersonalInfo,
+    as: 'StudentPersonalInfo'
+  }]
+})
+
+db.batch.addScope('tutor', {
+  include: [{
+    model:db.faculty,
+    as: 'Tutor'
   }]
 })
 

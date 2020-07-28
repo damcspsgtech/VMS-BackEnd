@@ -50,6 +50,8 @@ settingRouter.post('/', (req, res) => {
 /*
 * *GET* response to batch setting request.
 */
+
+
 settingRouter.get('/batch', (req, res) => {
 	repo.batchRepo.getAllBatchDetails()
 		.then((batches) => {
@@ -67,14 +69,34 @@ settingRouter.get('/batch', (req, res) => {
 
 		});
 });
+settingRouter.get('/batch/checkBatchActive', (req, res) => {
+	repo.batchRepo.checkBatchActive(req.query.id)
+		.then((batch) => {
+			
+			if (batch) {
+				res.send({
+					result: 'success',
+					batch_id : batch.id
+				})
+			}
+			else {
+				res.send({
+					result: 'failed'
+				})
+			}
+
+		});
+});
 settingRouter.post('/batch/update', (req, res) => {
+
+	
 	var data = {
 		id: req.body.batch_id,
 		count: req.body.batch_count,
 		email: req.body.batch_email,
 		color: req.body.batch_color,
 		active: req.body.batch_active,
-		batch_tutor: req.body.batch_tutor
+		batch_tutor: req.body.batch_tutorId,
 	};
 	repo.batchRepo.updateBatch(data)
 		.then(() => {
@@ -82,16 +104,23 @@ settingRouter.post('/batch/update', (req, res) => {
 				result: 'success'
 			})
 		})
-		.catch(() => res.send({
+		.catch((err) =>{ 
+			
+			console.log(err);
+			res.send({
+			
 			result: 'failed'
-		}));
+		})});
 
 })
 settingRouter.post('/batch/add', (req, res) => {
+
+	console.log(req.body)
+
 	repo.courseRepo.getCourseById(req.body.course_id)
 		.then((course) => {
 			if (course !== null) {
-				var data = {
+				const data = {
 					id: (req.body.batch_year).slice(2, 4) + req.body.course_id + '_' + req.body.batch_semester,
 					batch_code: (req.body.batch_year).slice(2, 4) + req.body.course_id,
 					count: 40,
@@ -104,30 +133,45 @@ settingRouter.post('/batch/add', (req, res) => {
 
 				};
 				repo.batchRepo.addBatch(data)
-					.then(() => {
+					.then((batch) => {
 						res.send({
-							result: 'success'
+							result: 'success',
+							batch
 						})
 					})
+					.catch((err) =>{
+						console.log(err) 
+						res.send({
+							result: 'failed'
+						})});
 
 			}
 			else {
+			
 				res.send({
 					result: 'course_dne'
 				});
 			}
 		})
-		.catch(() => res.send({
-			result: 'failed'
-		}));
+		.catch((err) =>{
+			console.log(err) 
+			res.send({
+				result: 'failed'
+			})});
 })
 settingRouter.post('/batch/delete', (req, res) => {
-	repo.batchRepo.deleteBatch(req.body.batch_id + '_' + req.body.batch_semester)
+	console.log(req.body)
+	repo.batchRepo.deleteBatch(req.body.batch_id)
 		.then(() => {
 			res.send({
 				result: 'success',
 			});
 		})
+		.catch((err) =>{
+			console.log(err) 
+			res.send({
+				result: 'failed'
+			})});
 })
 /*
 * Course Routes

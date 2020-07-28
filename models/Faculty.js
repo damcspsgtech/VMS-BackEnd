@@ -42,15 +42,8 @@ module.exports = (db, Sequelize) => {
     phone_number: {
       type: Sequelize.STRING,
     },
-    image: {
-      type: Sequelize.BLOB,
-      get() {
-        const data = this.getDataValue('image')
-        return data ? data.toString('base64') : ''
-      },
-      set(val) {
-        this.setDataValue('image', val);
-      }
+    image_name: {
+      type: Sequelize.STRING,
     }
   }, {
     cascade: false,
@@ -59,10 +52,6 @@ module.exports = (db, Sequelize) => {
         const salt = bcrypt.genSaltSync();
         faculty.password = bcrypt.hashSync(faculty.password, salt);
       },
-      beforeUpdate: (faculty) => {
-        const salt = bcrypt.genSaltSync();
-        faculty.password = bcrypt.hashSync(faculty.password, salt);
-      }
     },
     instanceMethods: {
       validPassword: (password) => {

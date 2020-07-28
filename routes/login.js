@@ -5,6 +5,9 @@
 /*
 * Imports
 */
+
+
+
 const express = require('express');
 const loginRouter = express.Router();
 const repo = require('../repos');
@@ -26,6 +29,7 @@ loginRouter.post('/', (req, res) => {
           req.session.isguide = user.is_guide;
           res.send({
             result: 'success',
+            userName: user.Tutor.id,
             role: 'tutor',
             batch: user.id,
           });
@@ -57,6 +61,7 @@ loginRouter.post('/', (req, res) => {
             req.session.isguide = user.is_guide;
             res.send({
               result: 'success',
+              userName: user.id,
               role: user.role,
               batch: ''
             });
