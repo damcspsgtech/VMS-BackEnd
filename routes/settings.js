@@ -223,4 +223,24 @@ settingRouter.post('/course/delete', (req, res) => {
 			}
 		})
 })
+
+settingRouter.get('/batchTutor', (req, res) => {
+	repo.batchRepo.getBatchTutor(req.query.id)
+		.then((batch) => {
+			if(batch.Tutor.id === 'admin'){
+				res.send({
+					result: 'admin',
+				})
+			}
+			res.send({
+				result: 'success',
+				tutor: batch.Tutor
+			})
+		})
+		.catch((error) => res.send({
+			result: 'failed',
+			error
+		}))
+})
+
 module.exports = settingRouter;

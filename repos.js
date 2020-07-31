@@ -6,118 +6,129 @@ const Op = db.Sequelize.Op;
 
 class StudentRepo {
 
-    addStudentProjectInfo(data){
+
+    addStudentProjectInfo(data) {
 
 
         return db.student.upsert({
 
-            id : data.id.toUpperCase(),
-            project_category: data.projectInfo.project_category,
-            organization_name: data.projectInfo.organization_name,
-            addressLine1: data.projectInfo.addressLine1,
-            addressLine2: data.projectInfo.addressLine2,
-            city: data.projectInfo.city,
-            state: data.projectInfo.state,
-            country: data.projectInfo.country,
+            id: data.id.toUpperCase(),
+            project_category: data.projectInfo.project_category.toUpperCase(),
+            organization_name: data.projectInfo.organization_name.toUpperCase(),
+            addressLine1: data.projectInfo.addressLine1.toUpperCase(),
+            addressLine2: data.projectInfo.addressLine2.toUpperCase(),
+            city: data.projectInfo.city.toUpperCase(),
+            state: data.projectInfo.state.toUpperCase(),
+            country: data.projectInfo.country.toUpperCase(),
             zip: data.projectInfo.zip,
-            address_url: data.projectInfo.address_url,
-            mentor_name: data.projectInfo.mentor_name,
-            mentor_designation: data.projectInfo.mentor_designation,
+            address_url: data.projectInfo.address_url.toUpperCase(),
+            mentor_name: data.projectInfo.mentor_name.toUpperCase(),
+            mentor_designation: data.projectInfo.mentor_designation.toUpperCase(),
             mentor_email: data.projectInfo.mentor_email,
-            project_domain: data.projectInfo.project_domain,
-            project_title: data.projectInfo.project_title ,
+            project_domain: data.projectInfo.project_domain.toUpperCase(),
+            project_title: data.projectInfo.project_title.toUpperCase(),
             joined_date: data.projectInfo.joined_date,
-           
+
         }, {
             returning: true
         })
-        .then(([student, created]) => { 
+            .then(([student, created]) => {
 
-            db.StudentPersonalInfo.findOne({
-                where: {
-                    roll_no: data.roll_no.toUpperCase()
+                db.StudentPersonalInfo.findOne({
+                    where: {
+                        roll_no: data.roll_no.toUpperCase()
+                    }
+                }).then((studentInfo) => {
+                    student.setStudentPersonalInfo(studentInfo)
+                })
+
+                db.batch.findOne({
+                    where: {
+                        id: data.batch_id,
+                    }
                 }
-            }).then((studentInfo)=>{
-                student.setStudentPersonalInfo(studentInfo)
+                )
+                    .then((batch) => {
+                        student.setBatch(batch)
+                    })
             })
-           
-            db.batch.findOne({
-                where: {
-                    id: data.batch_id,
-                }
-            }
-            )
-            .then((batch) => {
-                    student.setBatch(batch)
-            })
-        })
 
     }
 
     addStudentPersonalInfo(data) {
-       
-       return db.StudentPersonalInfo.upsert({
-                roll_no: data.roll_no.toUpperCase(),
-                course:data.course,
-                name: data.name,
-                email: data.email,
-                phone_number: data.phone_number,
-                image:''
-            })
+
+        return db.StudentPersonalInfo.upsert({
+            roll_no: data.roll_no.toUpperCase(),
+            course: data.course.toUpperCase(),
+            name: data.name.toUpperCase(),
+            email: data.email,
+            phone_number: data.phone_number,
+            image: ''
+        })
     }
 
     updateStudentPersonalInfo(data) {
-       
-        return db.StudentPersonalInfo.upsert({
-                 roll_no: data.roll_no.toUpperCase(),
-                 email: data.email,
-                 phone_number: data.phone_number,
-             })
-     }
 
-    uploadPhoto(data){
+        return db.StudentPersonalInfo.upsert({
+            roll_no: data.roll_no.toUpperCase(),
+            email: data.email,
+            phone_number: data.phone_number,
+        })
+    }
+
+    uploadPhoto(data) {
         return db.StudentPersonalInfo.upsert({
             roll_no: data.roll_no.toUpperCase(),
             image: data.url
         })
     }
+
     updateProjectDetails(data) {
         console.log(data)
         return db.student.upsert({
-            id: data.id,
-            project_category: data.project_category,
-            organization_name: data.organization_name,
-            addressLine1: data.addressLine1,
-            addressLine2: data.addressLine2,
-            city: data.city,
-            state: data.state,
-            country: data.country,
+            id: data.id.toUpperCase(),
+            project_category: data.project_category.toUpperCase(),
+            organization_name: data.organization_name.toUpperCase(),
+            addressLine1: data.addressLine1.toUpperCase(),
+            addressLine2: data.addressLine2.toUpperCase(),
+            city: data.city.toUpperCase(),
+            state: data.state.toUpperCase(),
+            country: data.country.toUpperCase(),
             zip: data.zip,
-            address_url: data.address_url,
-            mentor_name: data.mentor_name,
-            mentor_designation: data.mentor_designation,
+            address_url: data.address_url.toUpperCase(),
+            mentor_name: data.mentor_name.toUpperCase(),
+            mentor_designation: data.mentor_designation.toUpperCase(),
             mentor_email: data.mentor_email,
-            project_domain: data.project_domain,
-            project_title: data.project_title ,
-            joined_date: data.joined_date, 
-            
-         })
-        }
+            project_domain: data.project_domain.toUpperCase(),
+            project_title: data.project_title.toUpperCase(),
+            joined_date: data.joined_date,
 
-        findStudent(roll) {
-            return db.student.scope('active').findOne({
-                where: {
-                    id: roll.toUpperCase()
-                }
-            })
-        }
+        })
+    }
 
-        getStudentPersonalInfo(roll) {
+    getIndustryVsInstituteInfo() {
+        return db.student.scope('active').findAll({
+            group: ['project_category'],
+            attributes: ['project_category', [Sequelize.fn('count', Sequelize.col('project_category')), 'student_count']]
+        })
+    }
+
+    findStudent(roll) {
+        return db.student.scope('active').findOne({
+            where: {
+                id: roll.toUpperCase()
+            }
+        })
+    }
+
+    getStudentPersonalInfo(roll) {
         return db.StudentPersonalInfo.findOne({
             where: {
                 roll_no: roll.toUpperCase()
             }
         })
+
+
     }
 
     getActiveStudents() {
@@ -126,9 +137,16 @@ class StudentRepo {
         })
     }
 
+    getCityDistribution() {
+        return db.student.scope('active').findAll({
+            group: ['city'],
+            attributes: ['address_city', [Sequelize.fn('count', Sequelize.col('address_city')), 'student_count']]
+        })
+    }
+
     getActiveStudentsByBatch(batch) {
         return db.student.scope('active').findAll({
-            where: {BatchId:batch},
+            where: { BatchId: batch },
             order: [['StudentPersonalInfoRollNo', 'ASC']]
         })
     }
@@ -170,7 +188,7 @@ class FacultyRepo {
         return db.faculty.scope(['faculty', 'guide']).findAll({})
     }
 
-  
+
 
     getAllGuidesIds() {
         return db.faculty.scope(['faculty', 'guide']).findAll({
@@ -186,7 +204,7 @@ class FacultyRepo {
         return db.faculty.scope('faculty').findAll({
             where: {
                 [db.Sequelize.Op.and]: {
-                    
+
                     is_guide: {
                         [db.Sequelize.Op.in]: [filter_guide, !filter_notguide]
                     },
@@ -222,7 +240,7 @@ class FacultyRepo {
     }
 
 
-    updatePassword(id,pwd){
+    updatePassword(id, pwd) {
         return db.faculty.findOne({
             where: {
                 id: id,
@@ -232,7 +250,7 @@ class FacultyRepo {
                 const salt = bcrypt.genSaltSync();
                 pwd = bcrypt.hashSync(pwd, salt);
                 faculty.update({
-                   password : pwd,
+                    password: pwd,
                 })
             })
     }
@@ -243,6 +261,12 @@ class BatchRepo {
         return db.batch.findAll({
             order: [['id', 'DESC']],
             include: ['Tutor', 'Course'],
+        })
+    }
+
+    getBatchTutor(batchId) {
+        return db.batch.scope('tutor').findOne({
+            where: { id: batchId }
         })
     }
 
@@ -259,29 +283,29 @@ class BatchRepo {
     }
 
     updateBatch(data) {
-    
+
         return db.batch.upsert({
-                    id: data.id,
-                    count: data.count,
-                    email: data.email,
-                    color: data.color,
-                    active: data.active,
-                },{
-                    returning:true
-                }).then(([batch]) => {
-                 
-                    return batch.setTutor(data.batch_tutor);
-                })
+            id: data.id,
+            count: data.count,
+            email: data.email,
+            color: data.color,
+            active: data.active,
+        }, {
+            returning: true
+        }).then(([batch]) => {
+
+            return batch.setTutor(data.batch_tutor);
+        })
+    }
+
+    checkBatchActive(batchCode) {
+        return db.batch.findOne({
+            where: {
+                batch_code: batchCode,
+                active: true,
             }
-    
-            checkBatchActive(batchCode) {
-                return db.batch.findOne({
-                    where: {
-                        batch_code: batchCode ,
-                        active: true,
-                    }
-                })
-            }  
+        })
+    }
 
     findActiveTutor(tutor) {
         return db.batch.scope('tutor').findOne({
@@ -373,5 +397,5 @@ module.exports = {
     batchRepo: batchRepo,
     settingsRepo: settingsRepo,
     courseRepo: courseRepo,
- 
+
 }
