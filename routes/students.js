@@ -115,8 +115,7 @@ studentRouter.post('/addProjectDetails', (req, res) => {
 })
 
 studentRouter.get('/getStudentName', (req, res) => {
-	var roll = req.query.rollNumber.split('_')[0]
-	repo.studentRepo.getStudentPersonalInfo(req.query.roll)
+	repo.studentRepo.getStudentPersonalInfo(req.query.id)
 		.then((studentInfo) => {
 			res.send({
 				result: 'success',
@@ -207,7 +206,25 @@ studentRouter.get('/count', (req, res) => {
 })
 
 studentRouter.get('/studentVScity', (req, res) => {
-	repo.studentRepo.getCityDistribution()
+	if (!req.query.id) {
+		repo.studentRepo.getCityDistribution()
+			.then((studentVScity) => {
+				if (studentVScity !== null) {
+					res.send({
+						result: 'success',
+						studentVScity
+					})
+				}
+				else {
+					res.send({
+						result: 'failed',
+					})
+				}
+
+			})
+	}
+	else{
+		repo.studentRepo.getCityDistributionByBatch(req.query.id)
 		.then((studentVScity) => {
 			if (studentVScity !== null) {
 				res.send({
@@ -222,10 +239,30 @@ studentRouter.get('/studentVScity', (req, res) => {
 			}
 
 		})
+
+	}
 })
 
 studentRouter.get('/industryVSinstitute', (req, res) => {
-	repo.studentRepo.getIndustryVsInstituteInfo()
+	if (!req.query.id) {
+		repo.studentRepo.getIndustryVsInstituteInfo()
+			.then((industryVSinstitute) => {
+				if (industryVSinstitute !== null) {
+					res.send({
+						result: 'success',
+						industryVSinstitute
+					})
+				}
+				else {
+					res.send({
+						result: 'failed',
+					})
+				}
+
+			})
+	}
+	else{
+		repo.studentRepo.getIndustryVsInstituteInfoByBatch(req.query.id)
 		.then((industryVSinstitute) => {
 			if (industryVSinstitute !== null) {
 				res.send({
@@ -240,6 +277,7 @@ studentRouter.get('/industryVSinstitute', (req, res) => {
 			}
 
 		})
+	}
 })
 
 studentRouter.post('/search', (req, res) => {
