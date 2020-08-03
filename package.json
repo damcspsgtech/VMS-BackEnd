@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "prestart": "docker-compose -f docker-compose.db.yml up -d",
+    
     "start": "node ./bin/www",
-    "predev": "docker-compose -f docker-compose.db.yml up -d",
+    
     "dev": "nodemon ./bin/www",
     "test": "echo test",
     "stop-db": "docker-compose -f docker-compose.db.yml down",

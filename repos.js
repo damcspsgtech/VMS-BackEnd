@@ -196,6 +196,20 @@ class StudentRepo {
         })
     }
 
+    getActiveStudentIdsByBatch(batchId){
+        return db.student.findAll({
+            include: [{
+                        model: db.batch,
+                        where: {
+                        active: true,
+                        id: batchId
+                        }
+                    }],
+            attributes: ['id'],
+            order: [['roll_no', 'ASC']]
+        })
+    }
+
     getStudentCount() {
         return db.student.scope('active').count()
     }
@@ -214,6 +228,13 @@ class StudentRepo {
     getAllActiveStudentIds() {
         return db.student.scope('active').findAll({
             order: [['StudentPersonalInfoRollNo', 'ASC']],
+            attributes: ['id']
+        })
+    }
+
+    getActiveStudentIds(){
+        return db.student.scope('active').findAll({
+            order: [['roll_no', 'ASC']],
             attributes: ['id']
         })
     }
@@ -302,6 +323,12 @@ class FacultyRepo {
 }
 
 class BatchRepo {
+    getBatchCount(batchId){
+        return db.batch.findOne({
+            where: {id: batchId},
+            attributes: ['count']
+        })
+    }
     getAllBatchDetails() {
         return db.batch.findAll({
             order: [['id', 'DESC']],
@@ -317,6 +344,13 @@ class BatchRepo {
 
     getAllActiveBatch() {
         return db.batch.findAll({ where: { active: true } })
+    }
+
+    getAllActiveBatchIds() {
+        return db.batch.findAll({ 
+            where: { active: true },
+            attributes : ['id']
+        })
     }
 
     deleteBatch(id) {
@@ -427,7 +461,77 @@ class CourseRepo {
     }
 }
 
+class AllotmentRepo {
+    updateGuide(guide_id, guide_status){
+        return db.allotmentsnapshot.findAll({
+            attributes: ['id', 'guide']
+        })
+            .then((data) => {
+                data.forEach(allot => {
+                    const res = allot.dataValues.guide
+                    if(guide_status){
+                        res.push(guide_id)
+                    }
+                    else{
+                        const index = res.indexOf(guide_id)
+                        res.splice(index, 1)
+                    }
+                    db.allotmentsnapshot.upsert({
+                        id: allot.dataValues.id,
+                        guide: res
+                    })
+                })
+                return true;
+                
+            })
+    }
 
+    updateAllotment(guideId, students, otherBatch){
+        return db.faculty.findOne({
+            where: {id: guideId},
+            include: ['Alloted'],
+        }).then(data => {
+            const alloted = data.dataValues.Alloted;
+            alloted.forEach(student => {
+                if(!students.includes(student.dataValues.id) && !otherBatch.includes(student.dataValues.id)){
+                    data.removeAlloted(student);
+                    // console.log(data.dataValues.Alloted)
+
+                }
+
+            })
+            students.forEach(element => {
+                db.student.findOne({
+                    where: {
+                        id: element
+                    }
+                }).then(student =>{
+                    data.addAlloted(student)
+                })
+                    
+            })
+            
+            
+            return data;
+        })
+    }
+
+    updateSnapshot(id, data){
+        return db.allotmentsnapshot.findOne({where: {id: id}}).then(snapshot => {
+            snapshot.student = data.students
+            snapshot.guide = data.guides
+            snapshot.allotment1 = data.allotment1
+            snapshot.allotment2 = data.allotment2
+            return snapshot.save() 
+        })
+        
+    }
+    
+
+    getAllotmentSnapshot(id){
+        return db.allotmentsnapshot.findOne({where: {id:id}})
+    }
+}
 
 const studentRepo = new StudentRepo();
 const facultyRepo = new FacultyRepo();
