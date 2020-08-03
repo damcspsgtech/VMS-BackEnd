@@ -1,7 +1,7 @@
 const express = require('express');
 const db = require('./config/db');
 const bcrypt = require('bcrypt')
-
+const Sequelize = require('sequelize');
 const Op = db.Sequelize.Op;
 
 class StudentRepo {
@@ -107,9 +107,60 @@ class StudentRepo {
     }
 
     getIndustryVsInstituteInfo() {
-        return db.student.scope('active').findAll({
+        return db.student.findAll({
+            include: [{
+                model: db.batch,
+                where: {
+                  active: true,
+                },
+                attributes: []
+            }],
             group: ['project_category'],
             attributes: ['project_category', [Sequelize.fn('count', Sequelize.col('project_category')), 'student_count']]
+        })
+    }
+
+    getIndustryVsInstituteInfoByBatch(batchId) {
+        return db.student.findAll({
+            include: [{
+                model: db.batch,
+                where: {
+                  active: true,
+                  id: batchId
+                },
+                attributes: []
+            }],
+            group: ['project_category'],
+            attributes: ['project_category', [Sequelize.fn('count', Sequelize.col('project_category')), 'student_count']]
+        })
+    }
+
+    getCityDistribution() {
+        return db.student.findAll({
+            include: [{
+                model: db.batch,
+                where: {
+                  active: true
+                },
+                attributes: []
+            }],
+            group: ['city'],
+            attributes: ['city', [Sequelize.fn('count', Sequelize.col('city')), 'student_count']]
+        })
+    }
+
+    getCityDistributionByBatch(batchId) {
+        return db.student.findAll({
+            include: [{
+                model: db.batch,
+                where: {
+                  active: true,
+                  id: batchId
+                },
+                attributes: []
+            }],
+            group: ['city'],
+            attributes: ['city', [Sequelize.fn('count', Sequelize.col('city')), 'student_count']]
         })
     }
 
@@ -137,12 +188,6 @@ class StudentRepo {
         })
     }
 
-    getCityDistribution() {
-        return db.student.scope('active').findAll({
-            group: ['city'],
-            attributes: ['address_city', [Sequelize.fn('count', Sequelize.col('address_city')), 'student_count']]
-        })
-    }
 
     getActiveStudentsByBatch(batch) {
         return db.student.scope('active').findAll({
