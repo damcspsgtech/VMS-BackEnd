@@ -101,11 +101,8 @@ facultyRouter.post('/search', (req, res) => {
 })
 
 facultyRouter.post('/update', (req, res) => {
-  Promise
-    .all([
-      repo.facultyRepo.updateGuide(req.body.id, req.body.is_guide), 
-      repo.allotmentRepo.updateGuide(req.body.id, req.body.is_guide)
-    ])
+  
+  repo.facultyRepo.updateGuide(req.body.id, req.body.is_guide)
     .then(() => {
       res.send({
         result: 'success'
